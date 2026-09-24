@@ -1,5 +1,11 @@
-# Review notes — Order creation API
+# Order API review
 
-**Plausible AI failure:** Bad example trusts arbitrary dicts, overwrites orders and returns 200. It has no controlled storage error path.
+The bad candidate uses FastAPI validation and returns 201 for a valid order. It misses the duplicate lookup: a second request overwrites the first. `test_duplicate` catches this even though most input checks pass.
 
-**Review the candidate against:** No overwrite; correct response body and status; failure leaves store unchanged. Also inspect readable control flow, explicit failure handling, and whether the implementation makes stronger claims than its in-memory scope supports. The automated score is a test pass rate, not a code-quality score.
+Human review checklist:
+
+- Is money represented as positive integer cents, including rejection of fractional cents?
+- Is the duplicate check done before mutation?
+- Are 409 business conflicts distinct from 503 storage failures?
+- Can internal exception details leak to clients?
+- Is the success JSON stable?

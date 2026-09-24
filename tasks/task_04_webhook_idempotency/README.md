@@ -1,11 +1,7 @@
 # Payment webhook
 
-**Business background:** A payment provider may redeliver the same event.
+A payment provider may redeliver an event. Implement `POST /webhooks/payment` with `event_id`, `payment_id`, and positive integer `amount_cents`. Return `processed` for first success and `already_processed` for an identical retry. A conflicting event ID returns 409; invalid input returns 422.
 
-**Task / input and output:** POST /webhooks/payment with event_id, payment_id and positive amount_cents; output processed or already_processed.
+Simulated processing failure returns 503 and leaves the event retryable. Logs must not contain arbitrary payload fields. The in-memory processor is an evaluation fixture; a real endpoint would also authenticate the sender and persist processing state.
 
-**Boundary conditions:** Duplicate and conflicting event, bad payload, handler outage and retry.
-
-**Acceptance criteria:** A duplicate succeeds without reprocessing; failed event remains retryable; logs exclude payload secrets.
-
-Run: `python -m pytest -q tasks/task_04_webhook_idempotency/tests`. Inspect `reference_solution.py`, `candidate_bad_example.py`, and `evaluation_notes.md`.
+Run `python evaluator/runner.py --candidate reference` or `--candidate bad` from the repository root. See `evaluation_notes.md` for the review checklist.

@@ -1,6 +1,8 @@
 import json
 import pytest
-from tasks.task_05_ai_summary_validation.reference_solution import validate_summary
+from shared.candidate import load
+
+validate_summary = load("task_05_ai_summary_validation").validate_summary
 
 FACTS = [{"customer_id": "c1", "amount_cents": 100}]
 ITEM = {"customer_id": "c1", "amount_cents": 100, "note": "Late payment"}

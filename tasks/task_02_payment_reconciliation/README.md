@@ -1,11 +1,7 @@
 # Payment reconciliation
 
-**Business background:** Finance reconciles order and payment CSV exports.
+Finance imports `orders.csv` (`order_id,amount`) and `payments.csv` (`payment_id,order_id,amount`). Return each order's paid and unpaid integer cents, payment status, and an exception list. Keep unpaid orders and orphan payments visible; handle partial, multiple, and excess payments.
 
-**Task / input and output:** Input CSV columns: orders(order_id,amount), payments(payment_id,order_id,amount). Output order paid/unpaid cents and status plus exceptions.
+**Business rule:** the first occurrence of a nonempty `payment_id` reserves that ID, even if its amount is invalid. Every later occurrence is a duplicate and is not counted. This is a chosen business policy, not a technical necessity. Blank IDs and invalid amounts are exceptions. Decimal input has at most two places.
 
-**Boundary conditions:** Multiple and partial payments, overpayment, orphan, duplicate ID, blank or malformed amount, precision.
-
-**Acceptance criteria:** No duplicate counting; preserve unpaid orders and orphan exceptions; exact cents.
-
-Run: `python -m pytest -q tasks/task_02_payment_reconciliation/tests`. Inspect `reference_solution.py`, `candidate_bad_example.py`, and `evaluation_notes.md`.
+Run `python evaluator/runner.py --candidate reference` or `--candidate bad` from the repository root. See `evaluation_notes.md` for the review checklist.

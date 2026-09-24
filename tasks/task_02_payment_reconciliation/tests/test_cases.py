@@ -1,6 +1,8 @@
 from io import StringIO
 import pytest
-from tasks.task_02_payment_reconciliation.reference_solution import reconcile
+from shared.candidate import load
+
+reconcile = load("task_02_payment_reconciliation").reconcile
 
 O = "order_id,amount\na,10.00\nb,5.00\nc,2.00\n"
 P = "payment_id,order_id,amount\np1,a,3.00\np2,a,7.00\np3,b,6.00\np4,x,1.00\n"
@@ -46,3 +48,9 @@ def test_decimal_precision():
 def test_bad_columns():
     with pytest.raises(ValueError):
         run(o="id,amount\na,1.00\n")
+
+
+def test_invalid_first_payment_id_still_reserved():
+    result = run(p="payment_id,order_id,amount\np1,a,\np1,a,2.00\n")
+    assert result["orders"][0]["paid_cents"] == 0
+    assert [x["type"] for x in result["exceptions"]] == ["invalid_payment", "duplicate_or_missing_payment_id"]

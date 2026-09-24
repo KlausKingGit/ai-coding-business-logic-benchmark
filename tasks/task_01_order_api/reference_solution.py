@@ -7,7 +7,7 @@ app = FastAPI()
 class OrderIn(BaseModel):
     order_id: str = Field(min_length=1)
     customer_id: str = Field(min_length=1)
-    amount: float = Field(gt=0)
+    amount_cents: int = Field(gt=0, strict=True)
 
 
 class Store:

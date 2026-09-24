@@ -1,5 +1,11 @@
-# Review notes — Payment webhook
+# Webhook review
 
-**Plausible AI failure:** Bad example logs the entire payload and returns an error object for duplicates. It marks events without a failure-safe handler.
+The bad candidate validates the payload and suppresses ordinary duplicates. It marks an event as processed before simulated work succeeds. `test_failure_retry` verifies both the failed state and the later retry's side effect.
 
-**Review the candidate against:** A duplicate succeeds without reprocessing; failed event remains retryable; logs exclude payload secrets. Also inspect readable control flow, explicit failure handling, and whether the implementation makes stronger claims than its in-memory scope supports. The automated score is a test pass rate, not a code-quality score.
+Human review checklist:
+
+- Is an event recorded only after successful processing?
+- Can a retry repeat a side effect after a partial failure?
+- Are payload secrets excluded from logs?
+- Are identical duplicates successful while conflicting payloads are rejected?
+- What persistence and sender authentication would a real integration require?

@@ -1,5 +1,11 @@
-# Review notes — Payment reconciliation
+# Reconciliation review
 
-**Plausible AI failure:** Bad example inner-joins away unpaid/orphan rows and aggregates floating values; it never checks duplicate payment IDs.
+The bad candidate handles multiple payments, orphan records, and exact cents. It omits payment ID uniqueness, so a repeated payment is counted twice. `test_duplicate_payment_not_counted` and `test_invalid_first_payment_id_still_reserved` expose the rule violation.
 
-**Review the candidate against:** No duplicate counting; preserve unpaid orders and orphan exceptions; exact cents. Also inspect readable control flow, explicit failure handling, and whether the implementation makes stronger claims than its in-memory scope supports. The automated score is a test pass rate, not a code-quality score.
+Human review checklist:
+
+- Does aggregation avoid multiplying an order when it has several payments?
+- Are orphan payments retained in exceptions?
+- Does money arithmetic avoid float drift?
+- Does the first occurrence reserve a payment ID even when its amount is invalid?
+- Are blank fields rejected without stopping the whole file?

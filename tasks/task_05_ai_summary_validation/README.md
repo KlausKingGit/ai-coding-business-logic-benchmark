@@ -1,11 +1,7 @@
 # AI summary validation
 
-**Business background:** A manager reads a generated note about precomputed exceptions.
+A manager receives generated JSON: `{"items": [{"customer_id": str, "amount_cents": int, "note": str}]}`. Validate the schema strictly and require the item identities and amounts to match the supplied, precomputed facts exactly. Malformed JSON, extra or missing fields, duplicates, and changed amounts fail with `ValueError`.
 
-**Task / input and output:** Input JSON string with items[{customer_id,amount_cents,note}] and supplied facts; output validated JSON or ValueError.
+Only structured identity and numeric fields are checked against source data. Free-form `note` may still contain an unsupported claim and requires human review. No LLM call is made.
 
-**Boundary conditions:** Invalid JSON, missing/extra fields, type mismatch, invented or duplicated facts.
-
-**Acceptance criteria:** All fact identities and amounts exactly match input; schema admits no extras.
-
-Run: `python -m pytest -q tasks/task_05_ai_summary_validation/tests`. Inspect `reference_solution.py`, `candidate_bad_example.py`, and `evaluation_notes.md`.
+Run `python evaluator/runner.py --candidate reference` or `--candidate bad` from the repository root. See `evaluation_notes.md` for the review checklist.

@@ -1,9 +1,9 @@
 # Evaluation design
 
-These five tasks reflect routine backend failures rather than puzzles: HTTP contracts, payment aggregation, quota state, webhook delivery, and generated summaries. A program that starts can still overwrite an order, double charge a user, or invent a customer. Tests therefore assert outcomes and error paths, not merely importability.
+Five small backend contracts expose common AI-generated code errors: overwriting orders, double-counting payments, incomplete retry semantics, marking failed webhooks as done, and trusting structured AI output without checking source facts.
 
-- **Functional correctness:** Does the feature produce the specified output on valid input?
-- **Business correctness:** Do domain rules hold, including duplicates, insufficient balance, and exact money?
-- **Engineering correctness:** Are failures controlled, state updates atomic within the stated scope, logs safe, and code maintainable?
+The same tests run against both implementations. Passing a happy path earns partial credit; failing a business invariant reveals the gap. Scores count observed pytest cases only. They do not measure readability, safety beyond tested paths, or production readiness; the task notes provide human review prompts.
 
-Automated scoring deliberately measures only test pass rate. A human must inspect architecture, readability, security, and whether tests omit important behavior. These examples use process memory; real deployments need persistent unique constraints, transactions, and multi-worker coordination. The webhook example does not authenticate senders, so it is a local evaluation exercise, not a deployable payment integration.
+Functional correctness asks whether valid input produces the specified output. Business correctness asks whether domain rules survive duplicates, retries, and bad data. Engineering correctness asks whether errors, state changes, and logging remain controlled. A reviewer needs all three views.
+
+The services use process memory and simulated failures. They have no durable unique constraints, multi-worker transactions, or webhook signature verification. Task 05 checks structured identities and amounts, while unrestricted note text remains a human review task.

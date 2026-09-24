@@ -1,5 +1,11 @@
-# Review notes — AI summary validation
+# AI summary review
 
-**Plausible AI failure:** Bad example checks only JSON syntax, so invented customers and modified amounts pass.
+The bad candidate validates JSON shape but never compares it to supplied facts. Tests for invented identities, changed amounts, missing facts, and duplicates fail. Schema-valid output alone is insufficient.
 
-**Review the candidate against:** All fact identities and amounts exactly match input; schema admits no extras. Also inspect readable control flow, explicit failure handling, and whether the implementation makes stronger claims than its in-memory scope supports. The automated score is a test pass rate, not a code-quality score.
+Human review checklist:
+
+- Are `customer_id` and `amount_cents` checked against deterministic source data?
+- Are extra fields, missing fields, and wrong types rejected?
+- Does malformed JSON produce a controlled failure?
+- Could free-form `note` assert unsupported facts? A person must review its content.
+- Is the output contract small enough to inspect quickly?

@@ -1,6 +1,9 @@
 import pytest
 from fastapi.testclient import TestClient
-from tasks.task_04_webhook_idempotency.reference_solution import app, processor
+from shared.candidate import load
+
+candidate = load("task_04_webhook_idempotency")
+app, processor = candidate.app, candidate.processor
 
 E = {"event_id": "e1", "payment_id": "p1", "amount_cents": 100}
 
@@ -44,5 +47,7 @@ def test_failure_retry(client, caplog):
     r = client.post("/webhooks/payment", json=E | {"secret": "DO_NOT_LOG"})
     assert r.status_code == 503 and "DO_NOT_LOG" not in caplog.text
     assert processor.calls == 0
+    assert processor.processed == {}
     processor.fail = False
-    assert client.post("/webhooks/payment", json=E).status_code == 200
+    assert client.post("/webhooks/payment", json=E).json() == {"status": "processed"}
+    assert processor.calls == 1

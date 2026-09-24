@@ -1,11 +1,7 @@
 # User quota
 
-**Business background:** A local usage service deducts allowance for requests.
+A local service deducts a positive integer allowance via `deduct(user_id, amount, request_id)` and returns the remaining quota. Reject insufficient balance, invalid amounts, and request IDs reused with different arguments.
 
-**Task / input and output:** Input initial quota and deduct(user_id, amount, request_id); output remaining integer quota.
+An identical retry returns the *original response* and changes nothing, even if later requests have changed the current balance. Calls within one process serialize; this exercise does not promise durability or coordination between workers.
 
-**Boundary conditions:** Exact balance, insufficient quota, duplicate and conflicting request IDs, concurrent local calls.
-
-**Acceptance criteria:** Never negative; identical retry deducts once; local calls serialize.
-
-Run: `python -m pytest -q tasks/task_03_user_quota/tests`. Inspect `reference_solution.py`, `candidate_bad_example.py`, and `evaluation_notes.md`.
+Run `python evaluator/runner.py --candidate reference` or `--candidate bad` from the repository root. See `evaluation_notes.md` for the review checklist.
