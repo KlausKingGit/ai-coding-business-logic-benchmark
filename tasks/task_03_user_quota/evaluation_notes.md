@@ -1,6 +1,6 @@
 # Quota review
 
-The bad candidate prevents repeated deductions but stores no original response. After another request changes the balance, replaying the first request returns today's balance. `test_retry_returns_original_result` distinguishes these semantics.
+The flawed candidate prevents repeated deductions but stores no original response. After another request changes the balance, replaying the first request returns today's balance. `test_retry_returns_original_result` distinguishes these semantics.
 
 Human review checklist:
 

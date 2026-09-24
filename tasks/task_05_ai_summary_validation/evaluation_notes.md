@@ -1,6 +1,6 @@
 # AI summary review
 
-The bad candidate validates JSON shape but never compares it to supplied facts. Tests for invented identities, changed amounts, missing facts, and duplicates fail. Schema-valid output alone is insufficient.
+The flawed candidate validates JSON shape but never compares it to supplied facts. Tests for invented identities, changed amounts, missing facts, and duplicates fail. Schema-valid output alone is insufficient.
 
 Human review checklist:
 

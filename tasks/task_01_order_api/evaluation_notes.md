@@ -1,6 +1,6 @@
 # Order API review
 
-The bad candidate uses FastAPI validation and returns 201 for a valid order. It misses the duplicate lookup: a second request overwrites the first. `test_duplicate` catches this even though most input checks pass.
+The flawed candidate uses FastAPI validation and returns 201 for a valid order. It misses the duplicate lookup: a second request overwrites the first. `test_duplicate` catches this even though most input checks pass.
 
 Human review checklist:
 

@@ -1,6 +1,6 @@
 # Reconciliation review
 
-The bad candidate handles multiple payments, orphan records, and exact cents. It omits payment ID uniqueness, so a repeated payment is counted twice. `test_duplicate_payment_not_counted` and `test_invalid_first_payment_id_still_reserved` expose the rule violation.
+The flawed candidate handles multiple payments, orphan records, and exact cents. It omits payment ID uniqueness, so a repeated payment is counted twice. `test_duplicate_payment_not_counted` and `test_invalid_first_payment_id_still_reserved` expose the rule violation.
 
 Human review checklist:
 
