@@ -4,7 +4,7 @@ from pathlib import Path
 def write_report(candidate: str, rows: list[dict], target: Path) -> None:
     target.parent.mkdir(exist_ok=True)
     lines = [
-        f"# Evaluation report: {candidate}", "",
+        f"# Evaluation report: {candidate} candidate", "",
         "Score = round(100 × passed / (passed + failed)). Collection errors invalidate the run.",
         "Only observed test outcomes are scored; human review remains necessary.", "",
         "| Task | Passed | Failed | Errors | Score |",

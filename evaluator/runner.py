@@ -19,6 +19,8 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--candidate", choices=("reference", "bad"), default="reference")
     args = parser.parse_args()
+    display_candidate = "flawed" if args.candidate == "bad" else "reference"
+    print(f"Candidate: {display_candidate}")
     rows = []
     infrastructure_error = False
     for task in sorted((ROOT / "tasks").glob("task_*")):
@@ -42,14 +44,14 @@ def main() -> int:
             "failed_tests": FAILED_TEST.findall(output),
         })
         print(f"{task.name}: {passed} passed, {failed} failed, {errors} errors, {score(passed, failed)}/100")
-    target = ROOT / "reports" / f"{args.candidate}.md"
-    write_report(args.candidate, rows, target)
+    target = ROOT / "reports" / f"{display_candidate}.md"
+    write_report(display_candidate, rows, target)
     print(f"Report: {target}")
     if infrastructure_error:
         return 2
     if args.candidate == "reference" and any(row["failed"] for row in rows):
         return 1
-    return 0  # In bad mode, test failures are the expected evaluation result.
+    return 0  # In flawed candidate mode, test failures are the expected evaluation result.
 
 
 if __name__ == "__main__":

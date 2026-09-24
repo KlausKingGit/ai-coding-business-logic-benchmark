@@ -1,4 +1,4 @@
-# Evaluation report: reference
+# Evaluation report: reference candidate
 
 Score = round(100 × passed / (passed + failed)). Collection errors invalidate the run.
 Only observed test outcomes are scored; human review remains necessary.

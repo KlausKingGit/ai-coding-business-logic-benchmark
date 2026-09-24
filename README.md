@@ -20,7 +20,7 @@ python evaluator/runner.py --candidate bad
 
 ## Candidate comparison
 
-Observed with the same tests for both candidates (see [reference report](reports/reference.md) and [flawed candidate report](reports/bad.md)):
+Observed with the same tests for both candidates (see [reference report](reports/reference.md) and [flawed candidate report](reports/flawed.md)):
 
 | Task | Reference | Flawed candidate | Defect caught |
 |---|---:|---:|---|
@@ -39,7 +39,7 @@ Requires Python 3.11+. No database, external API, account, or secret.
 3. `python -m pip install -r requirements.txt`
 4. Run `python -m pytest -q`, then `python evaluator/runner.py --candidate reference` and `python evaluator/runner.py --candidate bad`.
 
-The runner writes `reports/reference.md` or `reports/bad.md`. The default `pytest` run uses the reference; `EVAL_CANDIDATE=bad python -m pytest -q` runs the identical tests against the flawed candidate. Failures in the flawed candidate mode are expected, so the runner exits successfully when evaluation completed without collection errors. A reference-mode failure or any collection error yields a nonzero exit code. Scores are `round(100 × passed / (passed + failed))`; they do not automate code-quality judgment.
+The runner writes `reports/reference.md` or `reports/flawed.md`. `bad` is the CLI identifier for the flawed candidate. The default `pytest` run uses the reference; `EVAL_CANDIDATE=bad python -m pytest -q` runs the identical tests against the flawed candidate. Failures in the flawed candidate mode are expected, so the runner exits successfully when evaluation completed without collection errors. A reference-mode failure or any collection error yields a nonzero exit code. Scores are `round(100 × passed / (passed + failed))`; they do not automate code-quality judgment.
 
 ## Why I built this
 
@@ -47,7 +47,7 @@ AI Coding review needs more than code that runs. These tasks check domain rules,
 
 ## Five-minute reading path
 
-Start with this page (one minute), [Quota task](tasks/task_03_user_quota/README.md) plus its [two implementations](tasks/task_03_user_quota/reference_solution.py) and [flawed candidate](tasks/task_03_user_quota/candidate_bad_example.py) (two minutes), [quota tests](tasks/task_03_user_quota/tests/test_cases.py) and [review notes](tasks/task_03_user_quota/evaluation_notes.md) (one minute), then the two reports (one minute).
+Start with this page (one minute), [Quota task](tasks/task_03_user_quota/README.md) plus its [two implementations](tasks/task_03_user_quota/reference_solution.py) and [flawed candidate](tasks/task_03_user_quota/flawed_candidate.py) (two minutes), [quota tests](tasks/task_03_user_quota/tests/test_cases.py) and [review notes](tasks/task_03_user_quota/evaluation_notes.md) (one minute), then the two reports (one minute).
 
 ## Known limits
 
