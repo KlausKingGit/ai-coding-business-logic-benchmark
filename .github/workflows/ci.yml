@@ -77,8 +77,8 @@ jobs:
       - name: Run isolated candidate smoke test
         env:
           BENCHMARK_IMAGE: ai-coding-business-logic-benchmark:ci
+          REPORT_DIR: $RUNNER_TEMP/container-reports
         run: |
-          export REPORT_DIR="$RUNNER_TEMP/container-reports"
           scripts/run_candidate_container.sh \
             "$RUNNER_TEMP/candidate" \
             container-smoke \
