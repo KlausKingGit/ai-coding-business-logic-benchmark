@@ -65,6 +65,23 @@ See:
 - [Machine-readable results](docs/results.md) / [中文](docs/results.zh-CN.md)
 - [Safe execution](docs/safe_execution.md) / [中文](docs/safe_execution.zh-CN.md)
 
+## Tooling for repeated evaluation
+
+The harness also supports repeatable workflows around the same ten canonical tasks:
+
+    python -m evaluator.compare reports/baseline.json reports/candidate.json
+    python -m evaluator.history reports/history
+    python -m evaluator.agent_bundle --output-dir ./agent-bundle
+    python -m evaluator.scaffold --output-dir /tmp/task_11_example --task-id task_11_example --title "Example" --summary "One narrow invariant." --area example --tag example
+
+See:
+
+- [Comparing results](docs/comparing_results.md) / [中文](docs/comparing_results.zh-CN.md)
+- [Agent bundles](docs/agent_bundles.md) / [中文](docs/agent_bundles.zh-CN.md)
+- [Task scaffold](docs/task_scaffold.md) / [中文](docs/task_scaffold.zh-CN.md)
+
+Result comparison intentionally refuses non-comparable benchmark versions/task sets and invalid infrastructure-error runs.
+
 ## Stronger isolation with Docker
 
 For untrusted external candidates, the repository includes a containerized execution path:

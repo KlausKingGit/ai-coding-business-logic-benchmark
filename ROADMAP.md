@@ -13,24 +13,31 @@ This roadmap describes benchmark evolution, not a target task count.
 - [x] Chinese documentation entry points;
 - [ ] first external task contribution.
 
-## v0.2 — External Evaluation Harness
+## Next release — v0.2.0
 
-- [x] evaluate external candidate directories;
+The unreleased v0.2.0 candidate now includes:
+
+- [x] external candidate directories;
 - [x] reproducible dependency/environment snapshot;
 - [x] machine-readable JSON results;
 - [x] fixture-quality gates;
-- [x] bounded handling and security guidance for external candidate code.
+- [x] bounded host execution and security guidance;
+- [x] comparable result diff and historical-run summaries;
+- [x] provider-neutral agent task bundles;
+- [x] contributor task scaffold generator;
+- [x] containerized execution with stronger isolation and CI smoke validation.
 
-## v0.3 — Tooling and Integrations
+No existing canonical task is removed or weakened in this release candidate.
 
-Optimization sequence:
+## Future directions
 
-1. [x] comparable result diff and historical-run summaries;
-2. [x] provider-neutral agent task bundles / adapters;
-3. [x] contributor task scaffold generator;
-4. [x] containerized execution path for stronger isolation.
+Only add tooling when real usage justifies it:
 
-No existing canonical task is planned for removal or weakening in this cycle.
+- first external task contribution;
+- optional thin provider-specific agent wrappers built on the bundle contract;
+- task-level timing and performance metadata;
+- stronger VM/sandbox integrations for higher-risk code;
+- result dashboards only after there is enough real run history to justify them.
 
 ## Covered task families
 

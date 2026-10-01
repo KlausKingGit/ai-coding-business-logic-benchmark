@@ -68,3 +68,38 @@ v0.2 adds Chinese companion documentation for the README, contributing flow, ben
 - existing reference/flawed CLI modes remain supported;
 - Markdown report output remains supported;
 - JSON reporting and external candidates are additive harness features.
+
+
+## Result comparison and history
+
+v0.2 can compare two valid JSON runs and summarize a directory of comparable historical runs without re-executing candidate code.
+
+Comparison refuses different benchmark versions, different evaluated task sets, and runs containing infrastructure errors.
+
+## Provider-neutral agent bundles
+
+The agent-bundle exporter creates one public-contract prompt per selected task plus a machine-readable output mapping and candidate directory.
+
+Reference/flawed source is intentionally excluded from exported prompts, and the benchmark core remains independent from vendor SDKs or API credentials.
+
+## Contributor scaffold
+
+The scaffold generator creates the canonical task file shape, task metadata, placeholder reference/flawed files, review notes, a deliberately failing test placeholder, and a fixture-quality example.
+
+It intentionally does not edit benchmark.json or fixture_expectations.json, so a generated draft cannot silently become a canonical benchmark task.
+
+## Containerized isolation
+
+The Docker path provides a stronger execution boundary for untrusted candidate code:
+
+- network disabled;
+- read-only root filesystem;
+- all Linux capabilities dropped;
+- no-new-privileges;
+- PID, memory, CPU, file-descriptor, and tmpfs limits;
+- candidate mount read-only;
+- host UID/GID execution.
+
+GitHub Actions performs a real container smoke test using task_08_optimistic_concurrency and verifies a 100/100 JSON result.
+
+This is stronger isolation, not a guarantee of perfect sandboxing.
