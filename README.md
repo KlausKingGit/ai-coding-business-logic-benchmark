@@ -47,6 +47,20 @@ Run one task:
 python evaluator/runner.py --candidate flawed --task task_10_unknown_write_outcome
 ```
 
+## Evaluate your own AI-generated code
+
+Put one Python file per task in a candidate directory, then point the runner at it:
+
+```bash
+python evaluator/runner.py \
+  --candidate-dir ./my-agent-output \
+  --candidate-name my-agent
+```
+
+You can evaluate only selected tasks with repeated `--task` arguments. External candidates use the same canonical tests as the repository-provided reference and flawed fixtures.
+
+See [Evaluating external candidates](docs/external_candidates.md) or the [中文说明](docs/external_candidates.zh-CN.md).
+
 ## Current benchmark
 
 Benchmark version: **0.1.0**
