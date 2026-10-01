@@ -1,5 +1,7 @@
 # v0.2.0 release notes
 
+Released on 2026-10-01.
+
 v0.2.0 turns the original benchmark corpus into an **external evaluation harness** while retaining all ten canonical v0.1.0 tasks.
 
 ## External candidate evaluation
