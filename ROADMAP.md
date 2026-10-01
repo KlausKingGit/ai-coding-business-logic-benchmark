@@ -27,7 +27,7 @@ Optimization sequence:
 
 1. [x] comparable result diff and historical-run summaries;
 2. [x] provider-neutral agent task bundles / adapters;
-3. [ ] contributor task scaffold generator;
+3. [x] contributor task scaffold generator;
 4. [ ] containerized execution path for stronger isolation.
 
 No existing canonical task is planned for removal or weakening in this cycle.
