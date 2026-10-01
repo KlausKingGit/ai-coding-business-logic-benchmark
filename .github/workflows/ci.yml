@@ -40,7 +40,21 @@ jobs:
         run: python -m pytest -q
 
       - name: Verify reference candidate
-        run: python evaluator/runner.py --candidate reference --report-dir "${{ runner.temp }}/reports"
+        run: |
+          python evaluator/runner.py \
+            --candidate reference \
+            --report-dir "${{ runner.temp }}/reports" \
+            --json-report "${{ runner.temp }}/reference.json"
 
       - name: Exercise flawed candidate fixture
-        run: python evaluator/runner.py --candidate flawed --report-dir "${{ runner.temp }}/reports"
+        run: |
+          python evaluator/runner.py \
+            --candidate flawed \
+            --report-dir "${{ runner.temp }}/reports" \
+            --json-report "${{ runner.temp }}/flawed.json"
+
+      - name: Validate fixture quality
+        run: |
+          python -m evaluator.fixture_check \
+            --reference-json "${{ runner.temp }}/reference.json" \
+            --flawed-json "${{ runner.temp }}/flawed.json"

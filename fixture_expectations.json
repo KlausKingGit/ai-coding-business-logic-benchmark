@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.0",
+  "tasks": {
+    "task_01_order_api": {
+      "minimum_passed": 9,
+      "must_fail_tests": ["test_duplicate"]
+    },
+    "task_02_payment_reconciliation": {
+      "minimum_passed": 8,
+      "must_fail_tests": [
+        "test_duplicate_payment_not_counted",
+        "test_invalid_first_payment_id_still_reserved"
+      ]
+    },
+    "task_03_user_quota": {
+      "minimum_passed": 10,
+      "must_fail_tests": ["test_retry_returns_original_result"]
+    },
+    "task_04_webhook_idempotency": {
+      "minimum_passed": 8,
+      "must_fail_tests": ["test_failure_retry"]
+    },
+    "task_05_ai_summary_validation": {
+      "minimum_passed": 6,
+      "must_fail_tests": [
+        "test_invalid_item[item0]",
+        "test_invalid_item[item1]",
+        "test_missing_fact",
+        "test_duplicate_fact"
+      ]
+    },
+    "task_06_inventory_move_atomicity": {
+      "minimum_passed": 7,
+      "must_fail_tests": ["test_record_failure_is_atomic"]
+    },
+    "task_07_document_authorization": {
+      "minimum_passed": 6,
+      "must_fail_tests": ["test_unauthorized_rename_leaves_document_unchanged"]
+    },
+    "task_08_optimistic_concurrency": {
+      "minimum_passed": 6,
+      "must_fail_tests": ["test_stale_update_rejected_and_unchanged"]
+    },
+    "task_09_api_contract_drift": {
+      "minimum_passed": 6,
+      "must_fail_tests": [
+        "test_new_required_request_field_is_breaking",
+        "test_removed_required_response_field_is_breaking"
+      ]
+    },
+    "task_10_unknown_write_outcome": {
+      "minimum_passed": 7,
+      "must_fail_tests": [
+        "test_timeout_after_apply_is_unknown_and_not_retried",
+        "test_timeout_before_apply_is_still_unknown_and_not_retried"
+      ]
+    }
+  }
+}
