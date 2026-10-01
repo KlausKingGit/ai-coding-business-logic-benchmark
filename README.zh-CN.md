@@ -64,6 +64,17 @@ runner 默认：
 
 详见：[安全执行说明](docs/safe_execution.zh-CN.md) 与 [SECURITY.zh-CN.md](SECURITY.zh-CN.md)。
 
+## 使用 Docker 提高隔离强度
+
+对于不可信 external candidate，可以使用仓库提供的容器执行路径：
+
+    docker build -f containers/Dockerfile -t ai-coding-business-logic-benchmark:local .
+    scripts/run_candidate_container.sh ./my-agent-output my-agent
+
+wrapper 默认禁网、只读 root filesystem、drop capabilities、no-new-privileges、资源限制，并把 candidate 只读挂载。
+
+详见：[容器隔离执行](docs/container_execution.zh-CN.md)。
+
 ## 当前 10 个任务
 
 | Task | 核心业务不变量 |

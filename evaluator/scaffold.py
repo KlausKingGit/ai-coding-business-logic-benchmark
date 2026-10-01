@@ -124,7 +124,7 @@ def write_scaffold(
         + "\n",
         encoding="utf-8",
     )
-    (output_dir / "SCaffold_NEXT_STEPS.md").write_text(
+    (output_dir / "SCAFFOLD_NEXT_STEPS.md").write_text(
         "# Scaffold next steps\n\n"
         "1. Replace every TODO and the intentionally failing placeholder test.\n"
         "2. Make the reference implementation pass all task tests.\n"

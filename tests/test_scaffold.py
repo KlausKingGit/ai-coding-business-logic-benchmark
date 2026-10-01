@@ -25,7 +25,7 @@ def test_scaffold_generates_canonical_shape_without_registering(tmp_path):
         "flawed_candidate.py",
         "evaluation_notes.md",
         "fixture_expectation.example.json",
-        "SCaffold_NEXT_STEPS.md",
+        "SCAFFOLD_NEXT_STEPS.md",
     }
     assert expected.issubset({path.name for path in output.iterdir()})
     assert (output / "tests" / "test_cases.py").is_file()

@@ -65,6 +65,17 @@ See:
 - [Machine-readable results](docs/results.md) / [中文](docs/results.zh-CN.md)
 - [Safe execution](docs/safe_execution.md) / [中文](docs/safe_execution.zh-CN.md)
 
+## Stronger isolation with Docker
+
+For untrusted external candidates, the repository includes a containerized execution path:
+
+    docker build -f containers/Dockerfile -t ai-coding-business-logic-benchmark:local .
+    scripts/run_candidate_container.sh ./my-agent-output my-agent
+
+The wrapper disables networking, uses a read-only root filesystem, drops capabilities, enables no-new-privileges, applies resource limits, and mounts candidate code read-only.
+
+See [Containerized execution](docs/container_execution.md) or the [中文说明](docs/container_execution.zh-CN.md).
+
 ## Current benchmark
 
 Benchmark version: **0.2.0**
