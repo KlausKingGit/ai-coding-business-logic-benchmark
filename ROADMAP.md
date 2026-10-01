@@ -9,6 +9,7 @@ This roadmap describes possible benchmark growth, not a promise to add every cat
 - [x] CI;
 - [x] compatibility rules;
 - [x] first additive task pack;
+- [x] API-drift and unknown-outcome task pack;
 - [ ] first external task contribution;
 - [ ] first tagged benchmark release.
 
@@ -21,15 +22,17 @@ This roadmap describes possible benchmark growth, not a promise to add every cat
 - structured-output grounding;
 - transactional atomicity;
 - authorization-before-mutation;
-- stale-state / optimistic concurrency.
+- stale-state / optimistic concurrency;
+- API contract compatibility / drift;
+- uncertain write outcome / no blind retry.
 
 ## Candidate task families
 
-- API contract drift;
-- partial failure and unknown outcomes;
-- retry after uncertain writes;
 - pagination / cursor correctness;
-- durable idempotency versus in-memory idempotency.
+- durable idempotency versus in-memory idempotency;
+- retry budgets and bounded backoff;
+- state-machine transition legality;
+- cross-resource consistency.
 
 ## Later tooling
 

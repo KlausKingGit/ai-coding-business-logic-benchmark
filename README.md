@@ -15,7 +15,9 @@ The current tasks target failure modes that are easy for plausible code to miss:
 - structured AI output validated against source facts;
 - multi-step state changes that must remain atomic on failure;
 - authorization checks that must happen before mutation;
-- stale writes that must not overwrite newer state.
+- stale writes that must not overwrite newer state;
+- API changes that silently break an existing client contract;
+- uncertain write outcomes that must not be blindly retried.
 
 Each task contains a human-readable contract, a reference implementation, a deliberately flawed but plausible implementation, the same pytest suite for both implementations, human review notes, and machine-readable task metadata.
 
@@ -40,12 +42,12 @@ The legacy CLI spelling `--candidate bad` remains supported for compatibility.
 Run one task:
 
 ```bash
-python evaluator/runner.py --candidate flawed --task task_03_user_quota
+python evaluator/runner.py --candidate flawed --task task_10_unknown_write_outcome
 ```
 
 ## Current benchmark
 
-Benchmark version: **0.2.0**
+Benchmark version: **0.3.0**
 
 | Task | Primary invariant | Selected tags |
 |---|---|---|
@@ -57,6 +59,8 @@ Benchmark version: **0.2.0**
 | `task_06_inventory_move_atomicity` | A failed movement record must not leave stock half-mutated | transaction, atomicity, rollback |
 | `task_07_document_authorization` | Authorization denial must happen before mutation | authorization, mutation ordering |
 | `task_08_optimistic_concurrency` | A stale version must not overwrite newer state | concurrency, stale state, versioning |
+| `task_09_api_contract_drift` | Server changes must preserve the compatibility guarantees an existing client relies on | API contract, compatibility, drift |
+| `task_10_unknown_write_outcome` | A timeout after an uncertain write must not trigger a blind retry | partial failure, unknown outcome, retry |
 
 The canonical task order and benchmark version live in [`benchmark.json`](benchmark.json). Each task has its own `task.json`.
 
@@ -98,7 +102,7 @@ The tasks are deliberately compact fixtures. Several use in-memory state and sim
 
 ## Roadmap
 
-Potential future task families include API contract drift, partial-failure / unknown-outcome semantics, pagination/cursor correctness, and durable idempotency. See [ROADMAP.md](ROADMAP.md).
+Future additions should be driven by concrete contribution needs rather than task-count targets. See [ROADMAP.md](ROADMAP.md).
 
 ## License
 

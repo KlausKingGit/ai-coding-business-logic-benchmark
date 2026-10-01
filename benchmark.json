@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "benchmark_id": "ai-coding-business-logic",
-  "benchmark_version": "0.2.0",
+  "benchmark_version": "0.3.0",
   "description": "Reproducible Python tasks for evaluating business-logic correctness in AI-generated code.",
   "tasks": [
     {"id": "task_01_order_api", "title": "Order creation API"},
@@ -11,6 +11,8 @@
     {"id": "task_05_ai_summary_validation", "title": "AI summary validation"},
     {"id": "task_06_inventory_move_atomicity", "title": "Inventory move atomicity"},
     {"id": "task_07_document_authorization", "title": "Document authorization"},
-    {"id": "task_08_optimistic_concurrency", "title": "Optimistic concurrency"}
+    {"id": "task_08_optimistic_concurrency", "title": "Optimistic concurrency"},
+    {"id": "task_09_api_contract_drift", "title": "API contract drift"},
+    {"id": "task_10_unknown_write_outcome", "title": "Unknown write outcome"}
   ]
 }

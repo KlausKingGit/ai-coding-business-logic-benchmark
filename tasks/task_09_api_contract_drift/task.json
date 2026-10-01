@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "id": "task_09_api_contract_drift",
+  "title": "API contract drift",
+  "summary": "Detect directional API changes that would break an existing client even when the endpoint still exists.",
+  "area": "api-compatibility",
+  "tags": ["api-contract", "compatibility", "drift", "schema"],
+  "candidates": {"reference": "reference_solution.py", "flawed": "flawed_candidate.py"},
+  "tests": "tests/test_cases.py",
+  "review_notes": "evaluation_notes.md",
+  "expected": {"reference": "pass_all", "flawed": "fail_at_least_one"},
+  "known_limits": ["Models method/path and required-field compatibility only; it is not a full OpenAPI compatibility checker."]
+}

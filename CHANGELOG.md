@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.3.0 - Unreleased
+
+### Added
+
+- task 09: directional API contract compatibility / drift detection;
+- task 10: uncertain write outcome with no blind retry.
+
+### Compatibility
+
+- tasks 01–08 are unchanged;
+- the benchmark runner and metadata contract are unchanged;
+- the release is additive, so earlier task-level results remain comparable.
+
 ## 0.2.0 - Unreleased
 
 ### Added
