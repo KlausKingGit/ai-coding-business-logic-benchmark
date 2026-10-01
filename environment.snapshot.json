@@ -1,0 +1,32 @@
+{
+  "snapshot_version": 1,
+  "captured_at": "2026-10-01",
+  "source": {
+    "provider": "GitHub Actions",
+    "workflow": "benchmark-ci",
+    "run_id": 36858957903,
+    "candidate_commit": "4582f54e3da36a2e173654e4bc7a862eb65ee6f7"
+  },
+  "runner": {
+    "os": "Ubuntu 24.04.5",
+    "image": "ubuntu-24.04",
+    "image_version": "20260927.320.1"
+  },
+  "validated_python": [
+    {
+      "version": "3.11.16",
+      "numpy": "2.4.6"
+    },
+    {
+      "version": "3.12.14",
+      "numpy": "2.5.3"
+    }
+  ],
+  "install": "python -m pip install -r requirements.lock",
+  "notes": [
+    "requirements.txt remains the human-maintained compatible dependency range.",
+    "requirements.lock is the reproducible CI snapshot for the validated Python 3.11/3.12 matrix.",
+    "Run 36858957903 validated locked installation, pip check, the full test suite, and both repository fixtures on Python 3.11/3.12.",
+    "A different Python minor version is outside this lock snapshot until it is explicitly added to CI and captured."
+  ]
+}

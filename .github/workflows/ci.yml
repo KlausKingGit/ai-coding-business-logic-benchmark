@@ -20,17 +20,41 @@ jobs:
         python-version: ["3.11", "3.12"]
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
           cache: pip
-      - name: Install dependencies
-        run: python -m pip install -r requirements.txt
+          cache-dependency-path: requirements.lock
+
+      - name: Install locked dependencies
+        run: python -m pip install -r requirements.lock
+
+      - name: Verify dependency graph
+        run: python -m pip check
+
       - name: Validate benchmark manifest
         run: python -m evaluator.manifest
+
       - name: Run test suite
         run: python -m pytest -q
+
       - name: Verify reference candidate
-        run: python evaluator/runner.py --candidate reference --report-dir "${{ runner.temp }}/reports"
+        run: |
+          python evaluator/runner.py \
+            --candidate reference \
+            --report-dir "${{ runner.temp }}/reports" \
+            --json-report "${{ runner.temp }}/reference.json"
+
       - name: Exercise flawed candidate fixture
-        run: python evaluator/runner.py --candidate flawed --report-dir "${{ runner.temp }}/reports"
+        run: |
+          python evaluator/runner.py \
+            --candidate flawed \
+            --report-dir "${{ runner.temp }}/reports" \
+            --json-report "${{ runner.temp }}/flawed.json"
+
+      - name: Validate fixture quality
+        run: |
+          python -m evaluator.fixture_check \
+            --reference-json "${{ runner.temp }}/reference.json" \
+            --flawed-json "${{ runner.temp }}/flawed.json"
