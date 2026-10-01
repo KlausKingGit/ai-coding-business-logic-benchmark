@@ -27,10 +27,13 @@ Each task contains a human-readable contract, a reference implementation, a deli
 
 Requires Python 3.11+.
 
+For the continuously validated Python 3.11/3.12 environment, install the lock snapshot:
+
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install -r requirements.txt
+python -m pip install -r requirements.lock
+python -m pip check
 
 python -m pytest -q
 python -m evaluator.manifest
@@ -39,13 +42,7 @@ python evaluator/runner.py --candidate reference
 python evaluator/runner.py --candidate flawed
 ```
 
-The legacy CLI spelling `--candidate bad` remains supported for compatibility.
-
-Run one task:
-
-```bash
-python evaluator/runner.py --candidate flawed --task task_10_unknown_write_outcome
-```
+Use `requirements.txt` when you want the declared compatible dependency ranges rather than the exact CI snapshot. See [Reproducible environment](docs/reproducibility.md).
 
 ## Evaluate your own AI-generated code
 
@@ -54,12 +51,19 @@ Put one Python file per task in a candidate directory, then point the runner at 
 ```bash
 python evaluator/runner.py \
   --candidate-dir ./my-agent-output \
-  --candidate-name my-agent
+  --candidate-name my-agent \
+  --json-report reports/my-agent.json
 ```
 
 You can evaluate only selected tasks with repeated `--task` arguments. External candidates use the same canonical tests as the repository-provided reference and flawed fixtures.
 
-See [Evaluating external candidates](docs/external_candidates.md) or the [中文说明](docs/external_candidates.zh-CN.md).
+**External candidate code is executed Python.** The runner sanitizes inherited environment variables and applies a per-task timeout, but it is not a sandbox. Use isolated infrastructure for code you do not trust.
+
+See:
+
+- [Evaluating external candidates](docs/external_candidates.md) / [中文](docs/external_candidates.zh-CN.md)
+- [Machine-readable results](docs/results.md) / [中文](docs/results.zh-CN.md)
+- [Safe execution](docs/safe_execution.md) / [中文](docs/safe_execution.zh-CN.md)
 
 ## Current benchmark
 
@@ -94,9 +98,12 @@ tasks/task_NN_slug/
   tests/test_cases.py
 ```
 
-The reference candidate must pass all task tests. The flawed candidate must remain plausible enough to pass at least one meaningful path while failing one or more tests that expose the intended business-rule defect.
+The reference candidate must pass all task tests. The flawed candidate must remain plausible enough to pass meaningful paths while failing the target tests that expose the intended business-rule defect.
 
-See [Benchmark contract](docs/benchmark_contract.md). A Chinese companion is available at [基准契约说明](docs/benchmark_contract.zh-CN.md).
+See:
+
+- [Benchmark contract](docs/benchmark_contract.md) / [中文](docs/benchmark_contract.zh-CN.md)
+- [Fixture quality gates](docs/fixture_quality.md) / [中文](docs/fixture_quality.zh-CN.md)
 
 ## Contributing a task
 
@@ -104,15 +111,24 @@ New task contributions are welcome. Start with [Adding a task](docs/adding_a_tas
 
 Task IDs are not renumbered after release.
 
-## Scoring
+## Scoring and result formats
 
 The included runner reports `round(100 × passed / (passed + failed))`.
 
-Collection errors invalidate a run. Passing tests does not establish production readiness, security, maintainability, or complete semantic correctness.
+Collection/execution errors invalidate a run. Passing tests does not establish production readiness, security, maintainability, or complete semantic correctness.
+
+Markdown reports remain the human-readable default. Use `--json-report` for machine-readable output.
 
 ## CI
 
-GitHub Actions validates manifest/task metadata, the full pytest suite, the reference candidate, and the deliberately flawed candidate as an evaluation fixture on Python 3.11 and 3.12.
+GitHub Actions validates on Python 3.11 and 3.12:
+
+- locked dependency installation and `pip check`;
+- benchmark manifest;
+- full pytest suite;
+- reference fixture;
+- flawed fixture;
+- fixture-quality expectations.
 
 ## Known limits
 

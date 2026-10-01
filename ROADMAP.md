@@ -21,7 +21,7 @@ Optimization sequence:
 2. [x] record a reproducible dependency/environment snapshot;
 3. [x] emit machine-readable JSON results;
 4. [x] enforce stronger fixture-quality gates for reference/flawed candidates;
-5. [ ] document safe handling of untrusted candidate code.
+5. [x] document and enforce bounded handling of external candidate code.
 
 No existing task is planned for removal as part of this optimization cycle.
 
@@ -44,6 +44,7 @@ Only add tooling when contributors need it:
 
 - result comparison and historical-run summaries;
 - optional adapters for AI coding agents;
-- task-level timing metadata.
+- task-level timing metadata;
+- stronger OS/container sandbox integrations.
 
 Prefer a small transparent runner over a large benchmark platform.

@@ -18,11 +18,73 @@ from evaluator.scoring import score
 SUMMARY = re.compile(r"(\d+) (passed|failed|error|errors)\b")
 FAILED_TEST = re.compile(r"^FAILED\s+.*?::(\S+)", re.MULTILINE)
 SAFE_REPORT_NAME = re.compile(r"[^A-Za-z0-9._-]+")
+ENV_NAME = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
+EXTERNAL_ENV_ALLOWLIST = {
+    "PATH",
+    "HOME",
+    "TMPDIR",
+    "TMP",
+    "TEMP",
+    "LANG",
+    "LC_ALL",
+    "LC_CTYPE",
+    "TZ",
+    "SYSTEMROOT",
+    "WINDIR",
+    "PATHEXT",
+    "COMSPEC",
+}
+RESERVED_EXTERNAL_ENV = {"EVAL_CANDIDATE", "EVAL_CANDIDATE_DIR"}
 
 
 def _safe_report_name(value: str) -> str:
     normalized = SAFE_REPORT_NAME.sub("-", value).strip("-._")
     return normalized or "external"
+
+
+def _build_candidate_env(
+    *,
+    candidate_mode: str,
+    external_dir: Path | None,
+    inherit_env: list[str],
+) -> dict[str, str]:
+    if candidate_mode != "external":
+        if inherit_env:
+            raise ValueError("--inherit-env requires --candidate-dir")
+        env = os.environ.copy()
+        env["EVAL_CANDIDATE"] = candidate_mode
+        env.pop("EVAL_CANDIDATE_DIR", None)
+        return env
+
+    env = {
+        key: value
+        for key, value in os.environ.items()
+        if key in EXTERNAL_ENV_ALLOWLIST
+    }
+    for name in inherit_env:
+        if not ENV_NAME.fullmatch(name):
+            raise ValueError(f"invalid environment variable name: {name!r}")
+        if name in RESERVED_EXTERNAL_ENV:
+            raise ValueError(f"cannot override reserved environment variable: {name}")
+        if name not in os.environ:
+            raise ValueError(f"environment variable is not set: {name}")
+        env[name] = os.environ[name]
+
+    env["EVAL_CANDIDATE"] = "external"
+    if external_dir is None:
+        raise ValueError("external candidate directory is required")
+    env["EVAL_CANDIDATE_DIR"] = str(external_dir)
+    return env
+
+
+def _timeout_output(exc: subprocess.TimeoutExpired) -> str:
+    output = ""
+    for value in (exc.stdout, exc.stderr):
+        if isinstance(value, bytes):
+            output += value.decode(errors="replace")
+        elif isinstance(value, str):
+            output += value
+    return output
 
 
 def main() -> int:
@@ -44,6 +106,19 @@ def main() -> int:
         help="display/report name for --candidate-dir runs",
     )
     parser.add_argument(
+        "--inherit-env",
+        action="append",
+        default=[],
+        metavar="NAME",
+        help="explicitly pass one host environment variable to external candidate code; repeat as needed",
+    )
+    parser.add_argument(
+        "--task-timeout-seconds",
+        type=float,
+        default=30.0,
+        help="maximum pytest runtime per task (default: 30 seconds)",
+    )
+    parser.add_argument(
         "--task",
         action="append",
         dest="task_ids",
@@ -57,6 +132,9 @@ def main() -> int:
         help="optional path for a machine-readable JSON result",
     )
     args = parser.parse_args()
+
+    if args.task_timeout_seconds <= 0:
+        parser.error("--task-timeout-seconds must be greater than zero")
 
     try:
         benchmark, tasks = load_benchmark()
@@ -92,45 +170,75 @@ def main() -> int:
         candidate_label = candidate_mode
         report_stem = candidate_mode
 
+    try:
+        base_env = _build_candidate_env(
+            candidate_mode=candidate_mode,
+            external_dir=external_dir,
+            inherit_env=args.inherit_env,
+        )
+    except ValueError as exc:
+        parser.error(str(exc))
+
     print(f"Benchmark: {benchmark['benchmark_id']} {benchmark['benchmark_version']}")
     print(f"Candidate: {candidate_label}")
     if external_dir is not None:
         print(f"Candidate directory: {external_dir}")
+        print("External candidate environment: sanitized")
+    print(f"Task timeout: {args.task_timeout_seconds:g}s")
 
     rows: list[dict] = []
     infrastructure_error = False
 
     for task in tasks:
-        env = os.environ.copy()
-        env["EVAL_CANDIDATE"] = candidate_mode
-        if external_dir is not None:
-            env["EVAL_CANDIDATE_DIR"] = str(external_dir)
-        else:
-            env.pop("EVAL_CANDIDATE_DIR", None)
+        try:
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    "-m",
+                    "pytest",
+                    "-q",
+                    "--disable-warnings",
+                    str(task.path / "tests"),
+                ],
+                cwd=ROOT,
+                env=base_env,
+                text=True,
+                capture_output=True,
+                timeout=args.task_timeout_seconds,
+            )
+        except subprocess.TimeoutExpired as exc:
+            infrastructure_error = True
+            timeout_message = (
+                f"timed out after {args.task_timeout_seconds:g} seconds"
+            )
+            output = _timeout_output(exc)
+            print(f"{task.id}: {timeout_message}")
+            if output:
+                print(output)
+            rows.append(
+                {
+                    "task": task.id,
+                    "passed": 0,
+                    "failed": 0,
+                    "errors": 1,
+                    "score": 0,
+                    "failed_tests": [],
+                    "infrastructure_error": timeout_message,
+                }
+            )
+            continue
 
-        result = subprocess.run(
-            [
-                sys.executable,
-                "-m",
-                "pytest",
-                "-q",
-                "--disable-warnings",
-                str(task.path / "tests"),
-            ],
-            cwd=ROOT,
-            env=env,
-            text=True,
-            capture_output=True,
-        )
         output = result.stdout + result.stderr
         counts = {kind: int(n) for n, kind in SUMMARY.findall(output)}
         passed = counts.get("passed", 0)
         failed = counts.get("failed", 0)
         errors = counts.get("error", 0) + counts.get("errors", 0)
+        row_infrastructure_error: str | None = None
 
         if result.returncode not in (0, 1) or errors or passed + failed == 0:
             infrastructure_error = True
-            print(f"{task.id}: test collection or execution error\n{output}")
+            row_infrastructure_error = "test collection or execution error"
+            print(f"{task.id}: {row_infrastructure_error}\n{output}")
 
         rows.append(
             {
@@ -140,6 +248,7 @@ def main() -> int:
                 "errors": errors,
                 "score": score(passed, failed),
                 "failed_tests": FAILED_TEST.findall(output),
+                "infrastructure_error": row_infrastructure_error,
             }
         )
         print(

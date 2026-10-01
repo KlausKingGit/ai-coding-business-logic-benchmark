@@ -34,8 +34,11 @@ def write_report(
     lines += ["", "## Failed tests", ""]
     for row in rows:
         lines.append(f"### {row['task']}")
+        infrastructure_error = row.get("infrastructure_error")
+        if infrastructure_error:
+            lines.append(f"- Infrastructure error: {infrastructure_error}")
         lines.extend(f"- `{name}`" for name in row["failed_tests"])
-        if not row["failed_tests"]:
+        if not row["failed_tests"] and not infrastructure_error:
             lines.append("- None")
         lines.append("")
     target.write_text("\n".join(lines), encoding="utf-8")
@@ -83,6 +86,7 @@ def build_json_report(
                 "errors": row["errors"],
                 "score": row["score"],
                 "failed_tests": list(row["failed_tests"]),
+                "infrastructure_error": row.get("infrastructure_error"),
             }
             for row in rows
         ],
