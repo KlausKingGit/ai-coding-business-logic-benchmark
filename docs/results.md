@@ -46,3 +46,10 @@ Example:
 The exact task list remains in `tasks` in the real output.
 
 A non-zero `failed` count is an evaluation result. Infrastructure/collection errors are recorded separately and cause the runner itself to return non-zero.
+
+
+## JSON Schema
+
+A machine-readable schema is provided at [`schemas/result.schema.json`](../schemas/result.schema.json).
+
+The result schema is versioned independently through the top-level `schema_version`. Additive benchmark releases do not require consumers to infer structure from prose.

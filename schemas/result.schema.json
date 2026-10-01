@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AI Coding Business-Logic Benchmark Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "benchmark", "candidate", "environment", "summary", "tasks"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "benchmark": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "version"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "version": {"type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$"}
+      }
+    },
+    "candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "name"],
+      "properties": {
+        "mode": {"enum": ["reference", "flawed", "external"]},
+        "name": {"type": "string", "minLength": 1}
+      }
+    },
+    "environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["python", "implementation", "platform"],
+      "properties": {
+        "python": {"type": "string", "minLength": 1},
+        "implementation": {"type": "string", "minLength": 1},
+        "platform": {"type": "string", "minLength": 1}
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tasks", "passed", "failed", "errors", "score"],
+      "properties": {
+        "tasks": {"type": "integer", "minimum": 0},
+        "passed": {"type": "integer", "minimum": 0},
+        "failed": {"type": "integer", "minimum": 0},
+        "errors": {"type": "integer", "minimum": 0},
+        "score": {"type": "integer", "minimum": 0, "maximum": 100}
+      }
+    },
+    "tasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id", "passed", "failed", "errors", "score",
+          "failed_tests", "infrastructure_error"
+        ],
+        "properties": {
+          "id": {"type": "string", "pattern": "^task_\\d{2}_[a-z0-9_]+$"},
+          "passed": {"type": "integer", "minimum": 0},
+          "failed": {"type": "integer", "minimum": 0},
+          "errors": {"type": "integer", "minimum": 0},
+          "score": {"type": "integer", "minimum": 0, "maximum": 100},
+          "failed_tests": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "infrastructure_error": {
+            "type": ["string", "null"]
+          }
+        }
+      }
+    }
+  }
+}

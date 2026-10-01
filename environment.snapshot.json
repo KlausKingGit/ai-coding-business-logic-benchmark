@@ -4,8 +4,8 @@
   "source": {
     "provider": "GitHub Actions",
     "workflow": "benchmark-ci",
-    "run_id": 36858291340,
-    "candidate_commit": "9dda42d4fac25be7bce74a79475fd3031e879d0d"
+    "run_id": 36858957903,
+    "candidate_commit": "4582f54e3da36a2e173654e4bc7a862eb65ee6f7"
   },
   "runner": {
     "os": "Ubuntu 24.04.5",
@@ -26,6 +26,7 @@
   "notes": [
     "requirements.txt remains the human-maintained compatible dependency range.",
     "requirements.lock is the reproducible CI snapshot for the validated Python 3.11/3.12 matrix.",
+    "Run 36858957903 validated locked installation, pip check, the full test suite, and both repository fixtures on Python 3.11/3.12.",
     "A different Python minor version is outside this lock snapshot until it is explicitly added to CI and captured."
   ]
 }
