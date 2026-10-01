@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from evaluator.manifest import ManifestError, load_benchmark
-from evaluator.report import write_report
+from evaluator.report import write_json_report, write_report
 from evaluator.scoring import score
 
 SUMMARY = re.compile(r"(\d+) (passed|failed|error|errors)\b")
@@ -51,6 +51,11 @@ def main() -> int:
     )
     parser.add_argument("--list-tasks", action="store_true")
     parser.add_argument("--report-dir", type=Path, default=ROOT / "reports")
+    parser.add_argument(
+        "--json-report",
+        type=Path,
+        help="optional path for a machine-readable JSON result",
+    )
     args = parser.parse_args()
 
     try:
@@ -143,14 +148,25 @@ def main() -> int:
         )
 
     suffix = "" if not args.task_ids else ".selected"
-    target = args.report_dir / f"{report_stem}{suffix}.md"
+    markdown_target = args.report_dir / f"{report_stem}{suffix}.md"
     write_report(
         candidate_label,
         rows,
-        target,
+        markdown_target,
         benchmark_version=benchmark["benchmark_version"],
     )
-    print(f"Report: {target}")
+    print(f"Report: {markdown_target}")
+
+    if args.json_report is not None:
+        write_json_report(
+            benchmark_id=benchmark["benchmark_id"],
+            benchmark_version=benchmark["benchmark_version"],
+            candidate_mode=candidate_mode,
+            candidate_name=candidate_label,
+            rows=rows,
+            target=args.json_report,
+        )
+        print(f"JSON report: {args.json_report}")
 
     if infrastructure_error:
         return 2

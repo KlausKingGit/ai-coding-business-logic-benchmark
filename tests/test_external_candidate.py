@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import os
 from pathlib import Path
 import subprocess
@@ -39,6 +40,7 @@ def test_runner_evaluates_external_candidate_directory(tmp_path):
         encoding="utf-8",
     )
     report_dir = tmp_path / "reports"
+    json_report = tmp_path / "result.json"
 
     result = subprocess.run(
         [
@@ -52,6 +54,8 @@ def test_runner_evaluates_external_candidate_directory(tmp_path):
             "task_08_optimistic_concurrency",
             "--report-dir",
             str(report_dir),
+            "--json-report",
+            str(json_report),
         ],
         cwd=ROOT,
         text=True,
@@ -63,3 +67,8 @@ def test_runner_evaluates_external_candidate_directory(tmp_path):
     assert "Candidate: test-agent" in result.stdout
     assert "task_08_optimistic_concurrency" in result.stdout
     assert (report_dir / "external-test-agent.selected.md").is_file()
+
+    payload = json.loads(json_report.read_text(encoding="utf-8"))
+    assert payload["candidate"] == {"mode": "external", "name": "test-agent"}
+    assert payload["summary"]["tasks"] == 1
+    assert payload["summary"]["score"] == 100

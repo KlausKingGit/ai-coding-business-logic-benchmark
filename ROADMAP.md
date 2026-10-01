@@ -19,7 +19,7 @@ Optimization sequence:
 
 1. [x] evaluate external candidate directories without changing the ten canonical tasks;
 2. [x] record a reproducible dependency/environment snapshot;
-3. [ ] emit machine-readable JSON results;
+3. [x] emit machine-readable JSON results;
 4. [ ] enforce stronger fixture-quality gates for reference/flawed candidates;
 5. [ ] document safe handling of untrusted candidate code.
 
