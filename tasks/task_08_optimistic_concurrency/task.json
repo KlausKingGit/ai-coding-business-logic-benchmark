@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "id": "task_08_optimistic_concurrency",
+  "title": "Optimistic concurrency",
+  "summary": "Reject stale versioned updates so an older writer cannot overwrite newer state.",
+  "area": "state-concurrency",
+  "tags": ["optimistic-concurrency", "stale-state", "versioning", "conflict"],
+  "candidates": {"reference": "reference_solution.py", "flawed": "flawed_candidate.py"},
+  "tests": "tests/test_cases.py",
+  "review_notes": "evaluation_notes.md",
+  "expected": {"reference": "pass_all", "flawed": "fail_at_least_one"},
+  "known_limits": ["Uses single-process in-memory state; the exercise is about version semantics, not distributed locking."]
+}

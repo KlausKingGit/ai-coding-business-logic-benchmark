@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "id": "task_07_document_authorization",
+  "title": "Document authorization",
+  "summary": "Require owner/admin authorization before a document rename can mutate durable-looking state.",
+  "area": "authorization-boundary",
+  "tags": ["authorization", "mutation-ordering", "access-control", "state"],
+  "candidates": {"reference": "reference_solution.py", "flawed": "flawed_candidate.py"},
+  "tests": "tests/test_cases.py",
+  "review_notes": "evaluation_notes.md",
+  "expected": {"reference": "pass_all", "flawed": "fail_at_least_one"},
+  "known_limits": ["Uses a small in-memory role model and does not represent a complete identity or policy system."]
+}

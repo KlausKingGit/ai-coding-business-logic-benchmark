@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "id": "task_01_order_api",
+  "title": "Order creation API",
+  "summary": "Create orders without allowing duplicates, invalid values, or storage failures to corrupt observable API behavior.",
+  "area": "api-contract",
+  "tags": ["api", "validation", "duplicate-write", "error-handling"],
+  "candidates": {"reference": "reference_solution.py", "flawed": "flawed_candidate.py"},
+  "tests": "tests/test_cases.py",
+  "review_notes": "evaluation_notes.md",
+  "expected": {"reference": "pass_all", "flawed": "fail_at_least_one"},
+  "known_limits": ["Uses an in-memory store and a simulated store failure."]
+}

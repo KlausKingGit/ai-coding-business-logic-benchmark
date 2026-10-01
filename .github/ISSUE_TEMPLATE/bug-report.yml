@@ -1,0 +1,35 @@
+name: Bug report
+description: Report an incorrect benchmark, runner, or documentation behavior
+title: "[bug] "
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Benchmark manifest / metadata
+        - Evaluator runner
+        - Existing task
+        - Documentation
+        - CI / tooling
+    validations:
+      required: true
+  - type: textarea
+    id: observed
+    attributes:
+      label: Observed behavior
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction
+      description: Include command, task id, candidate, and Python version when relevant.
+    validations:
+      required: true

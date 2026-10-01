@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "id": "task_10_unknown_write_outcome",
+  "title": "Unknown write outcome",
+  "summary": "Preserve an uncertain external-write outcome instead of blindly retrying after a timeout that may have followed a successful effect.",
+  "area": "partial-failure",
+  "tags": ["unknown-outcome", "partial-failure", "retry", "external-write"],
+  "candidates": {"reference": "reference_solution.py", "flawed": "flawed_candidate.py"},
+  "tests": "tests/test_cases.py",
+  "review_notes": "evaluation_notes.md",
+  "expected": {"reference": "pass_all", "flawed": "fail_at_least_one"},
+  "known_limits": ["Uses deterministic fake gateways and does not implement reconciliation, idempotency storage, or provider-specific recovery."]
+}
