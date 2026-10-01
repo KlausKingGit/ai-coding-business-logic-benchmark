@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AI Coding Agent Bundle Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "benchmark", "candidate_directory", "tasks"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "benchmark": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "version"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "version": {"type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$"}
+      }
+    },
+    "candidate_directory": {"const": "candidate"},
+    "tasks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "title", "prompt", "candidate"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^task_\\d{2}_[a-z0-9_]+$"},
+          "title": {"type": "string", "minLength": 1},
+          "prompt": {"type": "string", "pattern": "^prompts/task_"},
+          "candidate": {"type": "string", "pattern": "^candidate/task_"}
+        }
+      }
+    }
+  }
+}

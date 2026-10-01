@@ -9,7 +9,7 @@ This roadmap describes benchmark evolution, not a target task count.
 - [x] CI;
 - [x] compatibility rules;
 - [x] ten-task first release;
-- [x] first tagged benchmark release (`v0.1.0`);
+- [x] first tagged benchmark release (v0.1.0);
 - [x] Chinese documentation entry points;
 - [ ] first external task contribution.
 
@@ -26,7 +26,7 @@ This roadmap describes benchmark evolution, not a target task count.
 Optimization sequence:
 
 1. [x] comparable result diff and historical-run summaries;
-2. [ ] provider-neutral agent task bundles / adapters;
+2. [x] provider-neutral agent task bundles / adapters;
 3. [ ] contributor task scaffold generator;
 4. [ ] containerized execution path for stronger isolation.
 
