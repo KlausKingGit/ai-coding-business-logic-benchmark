@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "id": "task_04_webhook_idempotency",
+  "title": "Payment webhook",
+  "summary": "Process duplicate webhook deliveries without double effects while keeping failed processing retryable and logs bounded.",
+  "area": "event-processing",
+  "tags": ["webhook", "idempotency", "failure-atomicity", "logging"],
+  "candidates": {"reference": "reference_solution.py", "flawed": "flawed_candidate.py"},
+  "tests": "tests/test_cases.py",
+  "review_notes": "evaluation_notes.md",
+  "expected": {"reference": "pass_all", "flawed": "fail_at_least_one"},
+  "known_limits": ["The fixture does not authenticate webhook senders or persist processed-event state."]
+}

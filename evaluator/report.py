@@ -1,10 +1,11 @@
 from pathlib import Path
 
-
-def write_report(candidate: str, rows: list[dict], target: Path) -> None:
-    target.parent.mkdir(exist_ok=True)
-    lines = [
-        f"# Evaluation report: {candidate} candidate", "",
+def write_report(candidate: str, rows: list[dict], target: Path, *, benchmark_version: str | None = None) -> None:
+    target.parent.mkdir(parents=True, exist_ok=True)
+    lines = [f"# Evaluation report: {candidate} candidate", ""]
+    if benchmark_version:
+        lines += [f"Benchmark version: {benchmark_version}", ""]
+    lines += [
         "Score = round(100 × passed / (passed + failed)). Collection errors invalidate the run.",
         "Only observed test outcomes are scored; human review remains necessary.", "",
         "| Task | Passed | Failed | Errors | Score |",

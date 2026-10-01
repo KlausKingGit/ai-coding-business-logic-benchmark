@@ -1,4 +1,4 @@
 [tool.pytest.ini_options]
-testpaths = ["tasks"]
-python_files = ["test_cases.py"]
+testpaths = ["tasks", "tests"]
+python_files = ["test_cases.py", "test_*.py"]
 addopts = ["--import-mode=importlib"]

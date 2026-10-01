@@ -1,54 +1,99 @@
-# AI Coding Evaluation Demo
+# AI Coding Business-Logic Benchmark
 
-Five offline Python tasks for reviewing generated code against backend business rules. Each task has a prompt, reference implementation, plausible flawed candidate, shared tests, and a human review checklist.
+A small, reproducible benchmark for evaluating whether AI-generated Python code preserves backend business rules — not just whether it runs.
 
-## Example: How the evaluator catches a plausible implementation defect
+This repository started as a five-task evaluation demo. The repository name is retained for continuity, but the project is now organized as a reusable OSS benchmark that other people can run, extend, review, and maintain.
 
-**Flawed candidate (Task 03):**
+## What this benchmark measures
 
-```python
-if request_id in self.requests:
-    return self.quota[user_id]
-```
+The current tasks target failure modes that are easy for plausible code to miss:
 
-This looks reasonable: it avoids charging twice. But after `r1` reduces quota from 10 to 8 and `r2` reduces it to 5, replaying `r1` must return its original result **8**, not the current balance **5**. A retry is the same operation, including its response. The flawed candidate passes ordinary deduction, insufficient-balance, and immediate-retry cases; `test_retry_returns_original_result` exposes the missing response history.
+- duplicate-write protection and API error semantics;
+- payment reconciliation, deduplication, and exact money handling;
+- idempotent retries that must return the original response;
+- webhook retryability and failure atomicity;
+- structured AI output validated against source facts.
+
+Each task contains a human-readable contract, a reference implementation, a deliberately flawed but plausible implementation, the same pytest suite for both implementations, human review notes, and machine-readable task metadata.
+
+## Quick start
+
+Requires Python 3.11+.
 
 ```bash
-python evaluator/runner.py --candidate bad
-# task_03_user_quota: 10 passed, 1 failed, 0 errors, 91/100
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+
+python -m pytest -q
+python -m evaluator.manifest
+python evaluator/runner.py --list-tasks
+python evaluator/runner.py --candidate reference
+python evaluator/runner.py --candidate flawed
 ```
 
-## Candidate comparison
+The legacy CLI spelling `--candidate bad` remains supported for compatibility.
 
-Observed with the same tests for both candidates (see [reference report](reports/reference.md) and [flawed candidate report](reports/flawed.md)):
+Run one task:
 
-| Task | Reference | Flawed candidate | Defect caught |
-|---|---:|---:|---|
-| [Order API](tasks/task_01_order_api/README.md) | 10/10 | 9/10 | Duplicate overwrite |
-| [Reconciliation](tasks/task_02_payment_reconciliation/README.md) | 10/10 | 8/10 | Repeated payment ID |
-| [Quota](tasks/task_03_user_quota/README.md) | 11/11 | 10/11 | Retry returns current balance |
-| [Webhook](tasks/task_04_webhook_idempotency/README.md) | 9/9 | 8/9 | Failed event marked done |
-| [AI summary](tasks/task_05_ai_summary_validation/README.md) | 10/10 | 6/10 | Structured facts unchecked |
+```bash
+python evaluator/runner.py --candidate flawed --task task_03_user_quota
+```
 
-## Run locally
+## Current benchmark
 
-Requires Python 3.11+. No database, external API, account, or secret.
+Benchmark version: **0.1.0**
 
-1. `python3 -m venv .venv`
-2. `source .venv/bin/activate`
-3. `python -m pip install -r requirements.txt`
-4. Run `python -m pytest -q`, then `python evaluator/runner.py --candidate reference` and `python evaluator/runner.py --candidate bad`.
+| Task | Primary invariant | Selected tags |
+|---|---|---|
+| `task_01_order_api` | Duplicate orders must not overwrite stored state | API, validation, duplicate write |
+| `task_02_payment_reconciliation` | Repeated payment IDs must not be counted twice | reconciliation, money, deduplication |
+| `task_03_user_quota` | Identical retries return the original result | idempotency, retry semantics, concurrency |
+| `task_04_webhook_idempotency` | Failed processing remains retryable | webhook, failure atomicity, logging |
+| `task_05_ai_summary_validation` | Structured output must match source facts | structured output, schema, grounding |
 
-The runner writes `reports/reference.md` or `reports/flawed.md`. `bad` is the CLI identifier for the flawed candidate. The default `pytest` run uses the reference; `EVAL_CANDIDATE=bad python -m pytest -q` runs the identical tests against the flawed candidate. Failures in the flawed candidate mode are expected, so the runner exits successfully when evaluation completed without collection errors. A reference-mode failure or any collection error yields a nonzero exit code. Scores are `round(100 × passed / (passed + failed))`; they do not automate code-quality judgment.
+The canonical task order and benchmark version live in [`benchmark.json`](benchmark.json). Each task has its own `task.json`.
 
-## Why I built this
+## Reproducibility contract
 
-AI Coding review needs more than code that runs. These tasks check domain rules, validation, error paths, state changes, and testability. The flawed implementations pass some tests while failing targeted checks, which makes the assessment closer to reviewing a realistic generated-code patch. Read [evaluation design](docs/evaluation_design.md) for the scoring boundary and [common failures](docs/common_ai_coding_failures.md) for examples.
+A valid task must have:
 
-## Five-minute reading path
+```text
+tasks/task_NN_slug/
+  README.md
+  task.json
+  reference_solution.py
+  flawed_candidate.py
+  evaluation_notes.md
+  tests/test_cases.py
+```
 
-Start with this page (one minute), [Quota task](tasks/task_03_user_quota/README.md) plus its [two implementations](tasks/task_03_user_quota/reference_solution.py) and [flawed candidate](tasks/task_03_user_quota/flawed_candidate.py) (two minutes), [quota tests](tasks/task_03_user_quota/tests/test_cases.py) and [review notes](tasks/task_03_user_quota/evaluation_notes.md) (one minute), then the two reports (one minute).
+The reference candidate must pass all task tests. The flawed candidate must remain plausible enough to pass at least one meaningful path while failing one or more tests that expose the intended business-rule defect.
+
+See [Benchmark contract](docs/benchmark_contract.md).
+
+## Contributing a task
+
+New task contributions are welcome. Start with [Adding a task](docs/adding_a_task.md) and [CONTRIBUTING.md](CONTRIBUTING.md). Task IDs are not renumbered after release.
+
+## Scoring
+
+The included runner reports `round(100 × passed / (passed + failed))`.
+
+Collection errors invalidate a run. Passing tests does not establish production readiness, security, maintainability, or complete semantic correctness.
+
+## CI
+
+GitHub Actions validates manifest/task metadata, the full pytest suite, the reference candidate, and the deliberately flawed candidate as an evaluation fixture.
 
 ## Known limits
 
-The quota and webhook examples use in-memory state, so they do not provide durable or multi-process guarantees. The summary validator checks structured identities and amounts; free-form notes still require human review. Test scores measure only the stated cases and do not replace a code review.
+The existing tasks are deliberately compact fixtures. Several use in-memory state and simulated failures. They do not claim durable multi-process guarantees, distributed transactions, real webhook authentication, or exhaustive LLM-output verification.
+
+## Roadmap
+
+Potential future task families include transactional consistency, authorization boundaries, stale-state handling, API contract drift, and partial-failure / unknown-outcome semantics. See [ROADMAP.md](ROADMAP.md).
+
+## License
+
+MIT. See [LICENSE](LICENSE).

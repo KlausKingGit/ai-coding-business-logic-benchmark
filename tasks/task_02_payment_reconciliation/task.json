@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "id": "task_02_payment_reconciliation",
+  "title": "Payment reconciliation",
+  "summary": "Reconcile orders and payments while preserving duplicate-ID, orphan-payment, partial-payment, and exact-money rules.",
+  "area": "data-reconciliation",
+  "tags": ["reconciliation", "money", "deduplication", "data-quality"],
+  "candidates": {"reference": "reference_solution.py", "flawed": "flawed_candidate.py"},
+  "tests": "tests/test_cases.py",
+  "review_notes": "evaluation_notes.md",
+  "expected": {"reference": "pass_all", "flawed": "fail_at_least_one"},
+  "known_limits": ["Operates on small in-memory CSV streams and does not model external settlement systems."]
+}

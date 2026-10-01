@@ -1,0 +1,32 @@
+name: Task proposal
+description: Propose a new benchmark task before implementation
+title: "[task] "
+body:
+  - type: textarea
+    id: invariant
+    attributes:
+      label: Business invariant
+      description: What narrow rule should correct code preserve?
+    validations:
+      required: true
+  - type: textarea
+    id: plausible_failure
+    attributes:
+      label: Plausible flawed behavior
+      description: What implementation could look reasonable while violating the invariant?
+    validations:
+      required: true
+  - type: textarea
+    id: discriminating_tests
+    attributes:
+      label: Discriminating tests
+      description: Which observable tests would separate reference and flawed candidates?
+    validations:
+      required: true
+  - type: textarea
+    id: limits
+    attributes:
+      label: Known limits
+      description: What will this small fixture intentionally not model?
+    validations:
+      required: true
