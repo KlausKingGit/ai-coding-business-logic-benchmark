@@ -15,10 +15,10 @@ This roadmap describes benchmark evolution, not a target task count.
 
 ## v0.2 — External Evaluation Harness
 
-Planned optimization sequence:
+Optimization sequence:
 
-1. [ ] evaluate external candidate directories without changing the ten canonical tasks;
-2. [ ] record a reproducible dependency/environment snapshot;
+1. [x] evaluate external candidate directories without changing the ten canonical tasks;
+2. [x] record a reproducible dependency/environment snapshot;
 3. [ ] emit machine-readable JSON results;
 4. [ ] enforce stronger fixture-quality gates for reference/flawed candidates;
 5. [ ] document safe handling of untrusted candidate code.
