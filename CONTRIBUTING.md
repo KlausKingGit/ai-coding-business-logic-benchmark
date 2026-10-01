@@ -1,5 +1,7 @@
 # Contributing
 
+[中文贡献指南](CONTRIBUTING.zh-CN.md)
+
 Contributions are welcome if they make the benchmark more reproducible, discriminating, or maintainable.
 
 ## Good contributions
@@ -15,7 +17,7 @@ For a substantial task, opening a **Task proposal** issue first is encouraged.
 
 A task should:
 
-1. use a stable ID such as `task_06_transactional_inventory`;
+1. use a stable ID such as `task_11_pagination_cursor`;
 2. isolate one or a small number of closely related business invariants;
 3. run offline with no account, credential, paid API, or network dependency;
 4. include a reference implementation that passes all tests;

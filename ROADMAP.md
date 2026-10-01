@@ -1,6 +1,6 @@
 # Roadmap
 
-This roadmap describes possible benchmark growth, not a promise to add every category.
+This roadmap describes benchmark evolution, not a target task count.
 
 ## Foundation
 
@@ -8,10 +8,22 @@ This roadmap describes possible benchmark growth, not a promise to add every cat
 - [x] contribution path;
 - [x] CI;
 - [x] compatibility rules;
-- [x] ten-task first-release scope;
-- [x] first-release candidate assembled;
-- [ ] first tagged benchmark release;
+- [x] ten-task first release;
+- [x] first tagged benchmark release (`v0.1.0`);
+- [x] Chinese documentation entry points;
 - [ ] first external task contribution.
+
+## v0.2 — External Evaluation Harness
+
+Planned optimization sequence:
+
+1. [ ] evaluate external candidate directories without changing the ten canonical tasks;
+2. [ ] record a reproducible dependency/environment snapshot;
+3. [ ] emit machine-readable JSON results;
+4. [ ] enforce stronger fixture-quality gates for reference/flawed candidates;
+5. [ ] document safe handling of untrusted candidate code.
+
+No existing task is planned for removal as part of this optimization cycle.
 
 ## Covered task families
 
@@ -26,25 +38,12 @@ This roadmap describes possible benchmark growth, not a promise to add every cat
 - API contract compatibility / drift;
 - uncertain write outcome / no blind retry.
 
-## Candidate task families
-
-Future tasks should be added because they represent a useful, discriminating invariant — not to increase task count.
-
-Possible families:
-
-- pagination / cursor correctness;
-- durable idempotency versus in-memory idempotency;
-- retry budgets and bounded backoff;
-- state-machine transition legality;
-- cross-resource consistency.
-
 ## Later tooling
 
 Only add tooling when contributors need it:
 
-- machine-readable JSON evaluation output;
-- benchmark-result comparison;
-- task-level timing metadata;
-- optional adapters for evaluating externally generated patches.
+- result comparison and historical-run summaries;
+- optional adapters for AI coding agents;
+- task-level timing metadata.
 
 Prefer a small transparent runner over a large benchmark platform.

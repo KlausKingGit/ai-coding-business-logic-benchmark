@@ -1,8 +1,10 @@
 # AI Coding Business-Logic Benchmark
 
+[中文说明](README.zh-CN.md)
+
 A small, reproducible benchmark for evaluating whether AI-generated Python code preserves backend business rules — not just whether it runs.
 
-This repository started as a five-task evaluation demo. The repository name is retained for continuity, but the project is now organized as a reusable OSS benchmark that other people can run, extend, review, and maintain.
+This project evolved from an initial five-task evaluation demo into a reusable OSS benchmark that other people can run, extend, review, and maintain.
 
 ## What this benchmark measures
 
@@ -80,11 +82,13 @@ tasks/task_NN_slug/
 
 The reference candidate must pass all task tests. The flawed candidate must remain plausible enough to pass at least one meaningful path while failing one or more tests that expose the intended business-rule defect.
 
-See [Benchmark contract](docs/benchmark_contract.md).
+See [Benchmark contract](docs/benchmark_contract.md). A Chinese companion is available at [基准契约说明](docs/benchmark_contract.zh-CN.md).
 
 ## Contributing a task
 
-New task contributions are welcome. Start with [Adding a task](docs/adding_a_task.md) and [CONTRIBUTING.md](CONTRIBUTING.md). Task IDs are not renumbered after release.
+New task contributions are welcome. Start with [Adding a task](docs/adding_a_task.md) and [CONTRIBUTING.md](CONTRIBUTING.md). Chinese companions are available in [添加任务说明](docs/adding_a_task.zh-CN.md) and [贡献指南](CONTRIBUTING.zh-CN.md).
+
+Task IDs are not renumbered after release.
 
 ## Scoring
 
