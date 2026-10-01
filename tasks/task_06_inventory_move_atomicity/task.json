@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "id": "task_06_inventory_move_atomicity",
+  "title": "Inventory move atomicity",
+  "summary": "Move stock between buckets without leaving a partial state when movement recording fails.",
+  "area": "transactional-consistency",
+  "tags": ["transaction", "atomicity", "rollback", "state"],
+  "candidates": {"reference": "reference_solution.py", "flawed": "flawed_candidate.py"},
+  "tests": "tests/test_cases.py",
+  "review_notes": "evaluation_notes.md",
+  "expected": {"reference": "pass_all", "flawed": "fail_at_least_one"},
+  "known_limits": ["Uses in-memory stock and a simulated movement-record failure rather than a real database transaction."]
+}

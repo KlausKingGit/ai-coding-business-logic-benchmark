@@ -12,7 +12,10 @@ The current tasks target failure modes that are easy for plausible code to miss:
 - payment reconciliation, deduplication, and exact money handling;
 - idempotent retries that must return the original response;
 - webhook retryability and failure atomicity;
-- structured AI output validated against source facts.
+- structured AI output validated against source facts;
+- multi-step state changes that must remain atomic on failure;
+- authorization checks that must happen before mutation;
+- stale writes that must not overwrite newer state.
 
 Each task contains a human-readable contract, a reference implementation, a deliberately flawed but plausible implementation, the same pytest suite for both implementations, human review notes, and machine-readable task metadata.
 
@@ -42,7 +45,7 @@ python evaluator/runner.py --candidate flawed --task task_03_user_quota
 
 ## Current benchmark
 
-Benchmark version: **0.1.0**
+Benchmark version: **0.2.0**
 
 | Task | Primary invariant | Selected tags |
 |---|---|---|
@@ -51,6 +54,9 @@ Benchmark version: **0.1.0**
 | `task_03_user_quota` | Identical retries return the original result | idempotency, retry semantics, concurrency |
 | `task_04_webhook_idempotency` | Failed processing remains retryable | webhook, failure atomicity, logging |
 | `task_05_ai_summary_validation` | Structured output must match source facts | structured output, schema, grounding |
+| `task_06_inventory_move_atomicity` | A failed movement record must not leave stock half-mutated | transaction, atomicity, rollback |
+| `task_07_document_authorization` | Authorization denial must happen before mutation | authorization, mutation ordering |
+| `task_08_optimistic_concurrency` | A stale version must not overwrite newer state | concurrency, stale state, versioning |
 
 The canonical task order and benchmark version live in [`benchmark.json`](benchmark.json). Each task has its own `task.json`.
 
@@ -88,11 +94,11 @@ GitHub Actions validates manifest/task metadata, the full pytest suite, the refe
 
 ## Known limits
 
-The existing tasks are deliberately compact fixtures. Several use in-memory state and simulated failures. They do not claim durable multi-process guarantees, distributed transactions, real webhook authentication, or exhaustive LLM-output verification.
+The tasks are deliberately compact fixtures. Several use in-memory state and simulated failures. They do not claim durable multi-process guarantees, distributed transactions, real webhook authentication, or exhaustive LLM-output verification.
 
 ## Roadmap
 
-Potential future task families include transactional consistency, authorization boundaries, stale-state handling, API contract drift, and partial-failure / unknown-outcome semantics. See [ROADMAP.md](ROADMAP.md).
+Potential future task families include API contract drift, partial-failure / unknown-outcome semantics, pagination/cursor correctness, and durable idempotency. See [ROADMAP.md](ROADMAP.md).
 
 ## License
 

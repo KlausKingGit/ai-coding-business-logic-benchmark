@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.2.0 - Unreleased
+
+### Added
+
+- task 06: inventory move atomicity;
+- task 07: authorization-before-mutation;
+- task 08: optimistic concurrency / stale-write rejection.
+
+### Compatibility
+
+- tasks 01–05 are unchanged;
+- the runner and manifest contract remain backward-compatible with 0.1.0;
+- this release is additive, so earlier task-level results remain comparable.
+
 ## 0.1.0 - Unreleased
 
 ### Added

@@ -1,13 +1,16 @@
 {
   "schema_version": "1.0",
   "benchmark_id": "ai-coding-business-logic",
-  "benchmark_version": "0.1.0",
+  "benchmark_version": "0.2.0",
   "description": "Reproducible Python tasks for evaluating business-logic correctness in AI-generated code.",
   "tasks": [
     {"id": "task_01_order_api", "title": "Order creation API"},
     {"id": "task_02_payment_reconciliation", "title": "Payment reconciliation"},
     {"id": "task_03_user_quota", "title": "User quota"},
     {"id": "task_04_webhook_idempotency", "title": "Payment webhook"},
-    {"id": "task_05_ai_summary_validation", "title": "AI summary validation"}
+    {"id": "task_05_ai_summary_validation", "title": "AI summary validation"},
+    {"id": "task_06_inventory_move_atomicity", "title": "Inventory move atomicity"},
+    {"id": "task_07_document_authorization", "title": "Document authorization"},
+    {"id": "task_08_optimistic_concurrency", "title": "Optimistic concurrency"}
   ]
 }

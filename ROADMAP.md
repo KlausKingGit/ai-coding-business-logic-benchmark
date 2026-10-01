@@ -8,14 +8,23 @@ This roadmap describes possible benchmark growth, not a promise to add every cat
 - [x] contribution path;
 - [x] CI;
 - [x] compatibility rules;
+- [x] first additive task pack;
 - [ ] first external task contribution;
 - [ ] first tagged benchmark release.
 
+## Covered task families
+
+- duplicate writes and API semantics;
+- reconciliation and exact money;
+- idempotent retries;
+- webhook failure atomicity;
+- structured-output grounding;
+- transactional atomicity;
+- authorization-before-mutation;
+- stale-state / optimistic concurrency.
+
 ## Candidate task families
 
-- transactional consistency;
-- authorization / permission boundaries;
-- stale-state and optimistic-concurrency handling;
 - API contract drift;
 - partial failure and unknown outcomes;
 - retry after uncertain writes;
