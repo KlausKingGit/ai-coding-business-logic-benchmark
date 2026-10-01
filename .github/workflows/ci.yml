@@ -58,3 +58,32 @@ jobs:
           python -m evaluator.fixture_check \
             --reference-json "${{ runner.temp }}/reference.json" \
             --flawed-json "${{ runner.temp }}/flawed.json"
+
+  container-smoke:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build benchmark container
+        run: docker build -f containers/Dockerfile -t ai-coding-business-logic-benchmark:ci .
+
+      - name: Prepare external candidate fixture
+        run: |
+          mkdir -p "$RUNNER_TEMP/candidate"
+          cp tasks/task_08_optimistic_concurrency/reference_solution.py \
+            "$RUNNER_TEMP/candidate/task_08_optimistic_concurrency.py"
+
+      - name: Run isolated candidate smoke test
+        env:
+          BENCHMARK_IMAGE: ai-coding-business-logic-benchmark:ci
+        run: |
+          export REPORT_DIR="$RUNNER_TEMP/container-reports"
+          scripts/run_candidate_container.sh \
+            "$RUNNER_TEMP/candidate" \
+            container-smoke \
+            --task task_08_optimistic_concurrency
+
+      - name: Verify isolated result
+        run: |
+          python3 -c 'import json, os; p=json.load(open(os.path.join(os.environ["RUNNER_TEMP"], "container-reports", "result.json"))); assert p["candidate"]["mode"] == "external"; assert p["summary"]["tasks"] == 1; assert p["summary"]["errors"] == 0; assert p["summary"]["score"] == 100'

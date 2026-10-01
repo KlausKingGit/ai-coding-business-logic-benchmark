@@ -9,21 +9,35 @@ This roadmap describes benchmark evolution, not a target task count.
 - [x] CI;
 - [x] compatibility rules;
 - [x] ten-task first release;
-- [x] first tagged benchmark release (`v0.1.0`);
+- [x] first tagged benchmark release (v0.1.0);
 - [x] Chinese documentation entry points;
 - [ ] first external task contribution.
 
-## v0.2 — External Evaluation Harness
+## Next release — v0.2.0
 
-Optimization sequence:
+The unreleased v0.2.0 candidate now includes:
 
-1. [x] evaluate external candidate directories without changing the ten canonical tasks;
-2. [x] record a reproducible dependency/environment snapshot;
-3. [x] emit machine-readable JSON results;
-4. [x] enforce stronger fixture-quality gates for reference/flawed candidates;
-5. [x] document and enforce bounded handling of external candidate code.
+- [x] external candidate directories;
+- [x] reproducible dependency/environment snapshot;
+- [x] machine-readable JSON results;
+- [x] fixture-quality gates;
+- [x] bounded host execution and security guidance;
+- [x] comparable result diff and historical-run summaries;
+- [x] provider-neutral agent task bundles;
+- [x] contributor task scaffold generator;
+- [x] containerized execution with stronger isolation and CI smoke validation.
 
-No existing task is planned for removal as part of this optimization cycle.
+No existing canonical task is removed or weakened in this release candidate.
+
+## Future directions
+
+Only add tooling when real usage justifies it:
+
+- first external task contribution;
+- optional thin provider-specific agent wrappers built on the bundle contract;
+- task-level timing and performance metadata;
+- stronger VM/sandbox integrations for higher-risk code;
+- result dashboards only after there is enough real run history to justify them.
 
 ## Covered task families
 
@@ -38,13 +52,4 @@ No existing task is planned for removal as part of this optimization cycle.
 - API contract compatibility / drift;
 - uncertain write outcome / no blind retry.
 
-## Later tooling
-
-Only add tooling when contributors need it:
-
-- result comparison and historical-run summaries;
-- optional adapters for AI coding agents;
-- task-level timing metadata;
-- stronger OS/container sandbox integrations.
-
-Prefer a small transparent runner over a large benchmark platform.
+Prefer a small transparent benchmark and harness over a large platform.

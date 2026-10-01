@@ -64,6 +64,34 @@ runner 默认：
 
 详见：[安全执行说明](docs/safe_execution.zh-CN.md) 与 [SECURITY.zh-CN.md](SECURITY.zh-CN.md)。
 
+## 重复评测与维护工具
+
+同一组 10 个 canonical task 现在还可以配合以下工具：
+
+    python -m evaluator.compare reports/baseline.json reports/candidate.json
+    python -m evaluator.history reports/history
+    python -m evaluator.agent_bundle --output-dir ./agent-bundle
+    python -m evaluator.scaffold --output-dir /tmp/task_11_example --task-id task_11_example --title "Example" --summary "One narrow invariant." --area example --tag example
+
+详见：
+
+- [结果对比与历史运行](docs/comparing_results.zh-CN.md)
+- [Agent Bundle](docs/agent_bundles.zh-CN.md)
+- [Task Scaffold](docs/task_scaffold.zh-CN.md)
+
+结果比较会拒绝 benchmark version、task 集合不一致或包含 infrastructure error 的运行，避免制造“假可比”。
+
+## 使用 Docker 提高隔离强度
+
+对于不可信 external candidate，可以使用仓库提供的容器执行路径：
+
+    docker build -f containers/Dockerfile -t ai-coding-business-logic-benchmark:local .
+    scripts/run_candidate_container.sh ./my-agent-output my-agent
+
+wrapper 默认禁网、只读 root filesystem、drop capabilities、no-new-privileges、资源限制，并把 candidate 只读挂载。
+
+详见：[容器隔离执行](docs/container_execution.zh-CN.md)。
+
 ## 当前 10 个任务
 
 | Task | 核心业务不变量 |

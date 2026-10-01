@@ -38,3 +38,11 @@ If you discover a vulnerability in benchmark tooling that could unexpectedly exe
 Otherwise contact the maintainer privately instead of posting exploit details publicly.
 
 A useful report includes the affected path, reproduction steps, impact, and any safe mitigation you have identified.
+
+## Containerized isolation path
+
+For stronger isolation, use the repository Docker path documented in docs/container_execution.md.
+
+The wrapper disables networking, uses a read-only root filesystem, drops Linux capabilities, enables no-new-privileges, sets resource limits, and mounts the candidate read-only.
+
+This is still not a perfect sandbox. Linux containers share the host kernel, and container/runtime/kernel vulnerabilities remain outside the benchmark's guarantees.

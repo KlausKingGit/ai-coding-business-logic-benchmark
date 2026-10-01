@@ -46,3 +46,11 @@ runner 默认提供两层有限保护：
 如果发现 benchmark tooling 可能导致意外代码执行、secret 泄露、隔离边界逃逸或影响贡献者运行环境，请优先使用 GitHub private vulnerability reporting / security advisory。
 
 如果不可用，请私下联系维护者，不要直接公开 exploit 细节。
+
+## 容器隔离路径
+
+需要更强隔离时，请使用 docs/container_execution.zh-CN.md 中的 Docker 路径。
+
+wrapper 会禁网、使用只读 root filesystem、drop Linux capabilities、启用 no-new-privileges、设置资源限制，并把 candidate 目录只读挂载。
+
+这仍然不是“绝对安全 sandbox”。Linux container 共享 host kernel，container/runtime/kernel 漏洞不属于 benchmark 能保证的范围。
