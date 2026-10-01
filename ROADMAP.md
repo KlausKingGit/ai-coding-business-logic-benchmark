@@ -8,10 +8,10 @@ This roadmap describes possible benchmark growth, not a promise to add every cat
 - [x] contribution path;
 - [x] CI;
 - [x] compatibility rules;
-- [x] first additive task pack;
-- [x] API-drift and unknown-outcome task pack;
-- [ ] first external task contribution;
-- [ ] first tagged benchmark release.
+- [x] ten-task first-release scope;
+- [x] first-release candidate assembled;
+- [ ] first tagged benchmark release;
+- [ ] first external task contribution.
 
 ## Covered task families
 
@@ -27,6 +27,10 @@ This roadmap describes possible benchmark growth, not a promise to add every cat
 - uncertain write outcome / no blind retry.
 
 ## Candidate task families
+
+Future tasks should be added because they represent a useful, discriminating invariant — not to increase task count.
+
+Possible families:
 
 - pagination / cursor correctness;
 - durable idempotency versus in-memory idempotency;

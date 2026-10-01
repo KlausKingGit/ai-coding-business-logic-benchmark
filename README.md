@@ -47,7 +47,7 @@ python evaluator/runner.py --candidate flawed --task task_10_unknown_write_outco
 
 ## Current benchmark
 
-Benchmark version: **0.3.0**
+Benchmark version: **0.1.0**
 
 | Task | Primary invariant | Selected tags |
 |---|---|---|
@@ -94,7 +94,7 @@ Collection errors invalidate a run. Passing tests does not establish production 
 
 ## CI
 
-GitHub Actions validates manifest/task metadata, the full pytest suite, the reference candidate, and the deliberately flawed candidate as an evaluation fixture.
+GitHub Actions validates manifest/task metadata, the full pytest suite, the reference candidate, and the deliberately flawed candidate as an evaluation fixture on Python 3.11 and 3.12.
 
 ## Known limits
 

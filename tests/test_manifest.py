@@ -3,7 +3,7 @@ from evaluator.manifest import REQUIRED_TASK_FILES, load_benchmark
 def test_manifest_loads_all_registered_tasks():
     benchmark, tasks = load_benchmark()
     assert benchmark["schema_version"] == "1.0"
-    assert benchmark["benchmark_version"] == "0.3.0"
+    assert benchmark["benchmark_version"] == "0.1.0"
     assert len(tasks) == 10
     assert len({task.id for task in tasks}) == len(tasks)
 

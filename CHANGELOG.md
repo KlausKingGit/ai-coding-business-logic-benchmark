@@ -1,46 +1,40 @@
 # Changelog
 
-## 0.3.0 - Unreleased
+## 0.1.0 - Release candidate
 
-### Added
+First public OSS release candidate.
 
-- task 09: directional API contract compatibility / drift detection;
-- task 10: uncertain write outcome with no blind retry.
+### Benchmark
 
-### Compatibility
+Includes ten deterministic, offline Python business-logic tasks:
 
-- tasks 01–08 are unchanged;
-- the benchmark runner and metadata contract are unchanged;
-- the release is additive, so earlier task-level results remain comparable.
+1. order creation API — duplicate-write protection and API semantics;
+2. payment reconciliation — deduplication and exact-money rules;
+3. user quota — idempotent retries and original-response semantics;
+4. payment webhook — retryability and failure atomicity;
+5. AI summary validation — structured-output grounding;
+6. inventory move atomicity — all-or-nothing multi-step state changes;
+7. document authorization — authorization before mutation;
+8. optimistic concurrency — stale-write rejection;
+9. API contract drift — directional client/server compatibility;
+10. unknown write outcome — no blind retry after uncertain external writes.
 
-## 0.2.0 - Unreleased
+### OSS foundation
 
-### Added
-
-- task 06: inventory move atomicity;
-- task 07: authorization-before-mutation;
-- task 08: optimistic concurrency / stale-write rejection.
-
-### Compatibility
-
-- tasks 01–05 are unchanged;
-- the runner and manifest contract remain backward-compatible with 0.1.0;
-- this release is additive, so earlier task-level results remain comparable.
-
-## 0.1.0 - Unreleased
-
-### Added
-
-- formal benchmark manifest and per-task metadata;
-- machine-readable benchmark/task schemas;
-- manifest validation and task discovery;
-- task filtering and listing in the evaluator runner;
-- GitHub Actions CI for Python 3.11 and 3.12;
-- contribution, security, issue, and pull-request guidance;
-- MIT license;
-- benchmark contract and task-authoring documentation.
+- benchmark manifest and per-task machine-readable metadata;
+- benchmark/task JSON schemas;
+- strict manifest validation;
+- task listing and task-level selection in the evaluator runner;
+- reference and deliberately flawed candidates using the same tests;
+- Python 3.11 / 3.12 GitHub Actions CI;
+- contribution guide and task-authoring guide;
+- security policy;
+- issue forms and pull-request template;
+- changelog, roadmap, and compatibility contract;
+- MIT license.
 
 ### Compatibility
 
-- the original five task IDs and tests are retained;
-- `--candidate bad` remains available as an alias for `--candidate flawed`.
+- the original five task IDs and test semantics are retained;
+- `--candidate bad` remains available as a compatibility alias for `--candidate flawed`;
+- no earlier public benchmark release is claimed: the temporary 0.2.0/0.3.0 development labels were never released and are intentionally collapsed into this first 0.1.0 candidate.
