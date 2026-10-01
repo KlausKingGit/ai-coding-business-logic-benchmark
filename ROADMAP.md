@@ -15,15 +15,22 @@ This roadmap describes benchmark evolution, not a target task count.
 
 ## v0.2 — External Evaluation Harness
 
+- [x] evaluate external candidate directories;
+- [x] reproducible dependency/environment snapshot;
+- [x] machine-readable JSON results;
+- [x] fixture-quality gates;
+- [x] bounded handling and security guidance for external candidate code.
+
+## v0.3 — Tooling and Integrations
+
 Optimization sequence:
 
-1. [x] evaluate external candidate directories without changing the ten canonical tasks;
-2. [x] record a reproducible dependency/environment snapshot;
-3. [x] emit machine-readable JSON results;
-4. [x] enforce stronger fixture-quality gates for reference/flawed candidates;
-5. [x] document and enforce bounded handling of external candidate code.
+1. [x] comparable result diff and historical-run summaries;
+2. [ ] provider-neutral agent task bundles / adapters;
+3. [ ] contributor task scaffold generator;
+4. [ ] containerized execution path for stronger isolation.
 
-No existing task is planned for removal as part of this optimization cycle.
+No existing canonical task is planned for removal or weakening in this cycle.
 
 ## Covered task families
 
@@ -38,13 +45,4 @@ No existing task is planned for removal as part of this optimization cycle.
 - API contract compatibility / drift;
 - uncertain write outcome / no blind retry.
 
-## Later tooling
-
-Only add tooling when contributors need it:
-
-- result comparison and historical-run summaries;
-- optional adapters for AI coding agents;
-- task-level timing metadata;
-- stronger OS/container sandbox integrations.
-
-Prefer a small transparent runner over a large benchmark platform.
+Prefer a small transparent benchmark and harness over a large platform.
