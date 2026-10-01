@@ -1,6 +1,6 @@
-# v0.1.0 release candidate
+# v0.1.0 release notes
 
-This is the proposed first public release of the AI Coding Business-Logic Benchmark.
+Released on 2026-10-01 as the first public OSS release of the **AI Coding Business-Logic Benchmark**.
 
 ## Scope
 
@@ -16,9 +16,9 @@ It does not claim to measure overall model intelligence, general software-engine
 
 Individual task fixtures may use in-memory state or simulated failures where that keeps the target invariant easy to inspect and reproduce.
 
-## Release gates
+## Release status
 
-Before creating the `v0.1.0` tag / GitHub Release:
+All first-release gates were completed:
 
 - [x] ten tasks registered in the canonical manifest;
 - [x] each task has reference/flawed candidates, tests, review notes, and task metadata;
@@ -27,10 +27,22 @@ Before creating the `v0.1.0` tag / GitHub Release:
 - [x] Python 3.12 CI;
 - [x] README / contribution / security / compatibility documentation;
 - [x] MIT license;
-- [ ] release-candidate PR merged to `main`;
-- [ ] repository description updated to the benchmark positioning;
-- [ ] repository rename decision finalized;
-- [ ] `v0.1.0` tag created;
-- [ ] GitHub Release published.
+- [x] release-candidate PR merged to `main`;
+- [x] repository description updated to the benchmark positioning;
+- [x] repository renamed to `ai-coding-business-logic-benchmark`;
+- [x] `v0.1.0` tag created;
+- [x] GitHub Release published.
 
-The unchecked items require an explicit release decision; this release-candidate branch does not perform them.
+The `v0.1.0` tag points to commit:
+
+`f3419f753082368eb3c0574022600a0c7f52b952`
+
+The published release is:
+
+`v0.1.0 — First OSS Release`
+
+## Post-release note
+
+This file on `main` was updated after publication so it reflects the completed release state rather than the pre-release checklist.
+
+The `v0.1.0` tag remains the immutable release snapshot and is not changed by this documentation housekeeping.
